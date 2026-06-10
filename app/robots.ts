@@ -1,21 +1,17 @@
 import type { MetadataRoute } from "next";
 
 const SITE_URL =
-  process.env.NEXT_PUBLIC_SITE_URL || "https://kaufcheck.immobilienscout24.at";
+  process.env.NEXT_PUBLIC_SITE_URL || "https://wohnkredit-check.at";
 
 export default function robots(): MetadataRoute.Robots {
   return {
     rules: [
       {
         userAgent: "*",
-        allow: ["/", "/kaufcheck", "/kaufcheck/datenschutz"],
-        disallow: [
-          "/api/",
-          "/kaufcheck/wizard", // Form-Flow ohne eigenen SEO-Wert
-        ],
+        allow: ["/", "/datenschutz", "/impressum"],
+        disallow: ["/api/", "/check", "/lead"],
       },
     ],
     sitemap: `${SITE_URL}/sitemap.xml`,
-    host: SITE_URL,
   };
 }

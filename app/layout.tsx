@@ -1,43 +1,50 @@
 import type { Metadata, Viewport } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Inter } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
+  display: "swap",
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+const SITE_URL =
+  process.env.NEXT_PUBLIC_SITE_URL || "https://wohnkredit-check.at";
 
 export const metadata: Metadata = {
-  title: "ImmoScout Kaufcheck – Welche Immobilie kann ich mir leisten?",
+  metadataBase: new URL(SITE_URL),
+  title: {
+    default: "Wohnkredit-Check – Welche Immobilie kann ich mir leisten?",
+    template: "%s | Wohnkredit-Check",
+  },
   description:
-    "In 3 Minuten Klarheit über Ihr Budget – kostenlos und unverbindlich. Basiert auf österreichischen KIM-V-Richtlinien.",
+    "Kostenloser Leistbarkeits-Check für Ihre Wunschimmobilie in Österreich. In 2 Minuten Klarheit – KIM-V-konform, ohne Registrierung.",
+  applicationName: "Wohnkredit-Check",
+  alternates: { canonical: "/" },
+  openGraph: {
+    type: "website",
+    locale: "de_AT",
+    siteName: "Wohnkredit-Check",
+    title: "Welche Immobilie kann ich mir leisten?",
+    description:
+      "In 2 Minuten Klarheit über Ihr Budget. Kostenlos. Ohne Registrierung.",
+  },
 };
 
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  maximumScale: 5,
-  themeColor: "#FF6600",
+  themeColor: "#0F4C81",
 };
 
 export default function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+}: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html
-      lang="de"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
-    >
+    <html lang="de" className={`${inter.variable} h-full antialiased`}>
       <body className="min-h-full flex flex-col bg-background text-foreground">
         {children}
         <Analytics />
