@@ -80,9 +80,10 @@ function LeadInner() {
                 maxKaufpreis: result.maxKaufpreis,
                 monatlicheRate: result.monatlicheRate,
                 ekQuote: result.ekQuote,
+                eigenkapital: result.eigenkapital,
+                assets: data.assets,
                 bundesland: data.bundesland,
                 immobilienart: data.immobilienart,
-                eigenkapital: data.eigenkapital,
                 netto: data.netto,
               }
             : undefined,

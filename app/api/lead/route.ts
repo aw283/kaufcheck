@@ -68,10 +68,22 @@ export async function POST(request: Request) {
           `Max Kaufpreis: ${check.maxKaufpreis} EUR`,
           `Monatsrate:    ${check.monatlicheRate} EUR`,
           `EK-Quote:      ${Math.round(check.ekQuote * 100)} %`,
+          `Eigenkapital:  ${check.eigenkapital} EUR (gesamt)`,
           `Bundesland:    ${check.bundesland ?? "—"}`,
           `Immobilienart: ${check.immobilienart ?? "—"}`,
-          `Eigenkapital:  ${check.eigenkapital ?? "—"} EUR`,
           `Netto/Monat:   ${check.netto ?? "—"} EUR`,
+          ``,
+          `--- Vermögensaufstellung ---`,
+          check.assets
+            ? [
+                `Sparguthaben:     ${check.assets.sparguthaben} EUR`,
+                `Wertpapiere:      ${check.assets.wertpapiere} EUR`,
+                `Edelmetalle:      ${check.assets.edelmetalle} EUR`,
+                `Lebensvers.:      ${check.assets.lebensversicherung} EUR`,
+                `Schenkung/Erbe:   ${check.assets.schenkung} EUR`,
+                `Bestehende Immo:  ${check.assets.immobilie_wert} EUR (Restschuld: ${check.assets.immobilie_restschuld} EUR)`,
+              ].join("\n")
+            : "(keine Asset-Details)",
         ].join("\n")
       : "(kein Check-Ergebnis übermittelt)",
   ].join("\n");

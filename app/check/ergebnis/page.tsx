@@ -11,6 +11,8 @@ import {
   ChevronLeft,
   Heart,
   Home,
+  Lightbulb,
+  TrendingUp,
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -44,6 +46,8 @@ export default function ErgebnisPage() {
         {result.status === "leistbar" && <LeistbarView />}
         {result.status === "grenzfall" && <GrenzfallView />}
         {result.status === "nicht_leistbar" && <NichtLeistbarView />}
+
+        <EkBreakdown />
 
         <div className="flex justify-end">
           <Button
@@ -83,9 +87,21 @@ function LeistbarView() {
           Bis {formatEuro(result.maxKaufpreis)} leistbar
         </h1>
         <dl className="mt-5 grid gap-3 sm:grid-cols-3">
-          <Stat label="Monatliche Rate" value={`${formatEuro(result.monatlicheRate)}`} sub={`${result.laufzeitJahre} Jahre Laufzeit`} />
-          <Stat label="Eigenkapitalquote" value={`${Math.round(result.ekQuote * 100)} %`} sub="KIM-V-Minimum: 20 %" />
-          <Stat label="Nebenkosten (~10 %)" value={formatEuro(result.nebenkosten)} sub="GrESt, Notar, Makler" />
+          <Stat
+            label="Monatliche Rate"
+            value={formatEuro(result.monatlicheRate)}
+            sub={`${result.laufzeitJahre} Jahre Laufzeit`}
+          />
+          <Stat
+            label="Eigenkapital"
+            value={formatEuro(result.eigenkapital)}
+            sub={`${Math.round(result.ekQuote * 100)} % Quote`}
+          />
+          <Stat
+            label="Nebenkosten (~10 %)"
+            value={formatEuro(result.nebenkosten)}
+            sub="GrESt, Notar, Makler"
+          />
         </dl>
       </div>
 
@@ -128,28 +144,26 @@ function GrenzfallView() {
           Mit Anpassungen erreichbar
         </h1>
         <p className="mt-2 text-sm text-muted-foreground">
-          Aktueller Rahmen: <strong className="text-foreground">{formatEuro(result.maxKaufpreis)}</strong> · Monatsrate: <strong className="text-foreground">{formatEuro(result.monatlicheRate)}</strong>
+          Aktueller Rahmen:{" "}
+          <strong className="text-foreground">
+            {formatEuro(result.maxKaufpreis)}
+          </strong>{" "}
+          · Monatsrate:{" "}
+          <strong className="text-foreground">
+            {formatEuro(result.monatlicheRate)}
+          </strong>
         </p>
-
-        <div className="mt-5 grid gap-3 sm:grid-cols-2">
-          <Tip title="Mehr Eigenkapital">
-            Schon +20.000 € erweitern den Rahmen spürbar – auch
-            Familien­bürgschaften oder Bauspardarlehen zählen.
-          </Tip>
-          <Tip title="Längere Laufzeit">
-            Bis zu 35 Jahre KIM-V-konform – senkt die Monats­rate und erweitert
-            den maximalen Kaufpreis.
-          </Tip>
-        </div>
       </div>
+
+      <HiddenEquityTips />
 
       <div className="rounded-lg border bg-primary/5 p-5">
         <h2 className="text-lg font-semibold">
-          Welche Stellschraube passt zu Ihnen?
+          Ein Berater findet meistens noch Spielraum
         </h2>
         <p className="mt-1 text-sm text-muted-foreground">
-          Ein unabhängiger Berater zeigt Ihnen Förderungen und Bank-Optionen,
-          die Sie selbst nicht finden würden.
+          Förderungen, Bank-Vergleich, alternative Sicherheiten – kostenlos und
+          unverbindlich.
         </p>
         <Button asChild size="lg" className="mt-4 w-full sm:w-auto">
           <Link href="/lead?typ=finanzierung">
@@ -171,18 +185,21 @@ function NichtLeistbarView() {
           Ehrliche Einschätzung
         </div>
         <h1 className="mt-1 text-balance text-3xl font-bold tracking-tight sm:text-4xl">
-          Aktuell noch nicht der richtige Zeitpunkt
+          Aktuell knapp – aber nicht aussichtslos
         </h1>
         <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-          Mit Ihren aktuellen Eckdaten ist eine tragfähige Finanzierung
-          schwierig. Das heißt nicht, dass der Wunsch auf Eis liegt – sondern
-          dass ein Zwischen­schritt sinnvoller ist (Eigen­kapital aufbauen,
-          bestehende Kredite ablösen, Förderungen prüfen).
+          Mit den aktuellen Eckdaten ist eine tragfähige Finanzierung
+          schwierig. Aber: Sie haben womöglich Hebel, die noch nicht alle
+          erkannt sind.
         </p>
       </div>
 
+      <HiddenEquityTips />
+
       <div className="rounded-lg border bg-card p-5">
-        <h2 className="text-lg font-semibold">Update bekommen, wenn es passt?</h2>
+        <h2 className="text-lg font-semibold">
+          Update bekommen, wenn es passt?
+        </h2>
         <p className="mt-1 text-sm text-muted-foreground">
           Wir melden uns mit Marktinfos und Förderungs-Tipps für Ihre Region –
           ohne Spam, jederzeit abbestellbar.
@@ -194,6 +211,95 @@ function NichtLeistbarView() {
         </Button>
       </div>
     </>
+  );
+}
+
+function HiddenEquityTips() {
+  return (
+    <div className="rounded-lg border-2 border-primary/20 bg-primary/5 p-5">
+      <div className="mb-3 flex items-center gap-2">
+        <Lightbulb className="h-4 w-4 text-primary" aria-hidden />
+        <h3 className="text-sm font-semibold uppercase tracking-wide text-primary">
+          Verstecktes Eigenkapital — oft übersehen
+        </h3>
+      </div>
+      <ul className="space-y-2 text-sm">
+        <Tip
+          title="Zweiter Kreditnehmer hinzufügen"
+          body="Wer den Kredit gemeinsam mit Partner:in oder einer dritten Person aufnimmt, verdoppelt die DSTI-Basis. Oft der größte Hebel."
+        />
+        <Tip
+          title="Bestehende Immobilie als Sicherheit"
+          body="Auch eine vorhandene Wohnung oder Haus (auch elterlich) kann zu 70 % als Sicherheit dienen – minus Restschuld."
+        />
+        <Tip
+          title="Eltern-Bürgschaft oder Schenkung"
+          body="In AT üblich: Eltern verbürgen sich oder schenken einen Betrag schriftlich. Beides erhöht das Eigenkapital signifikant."
+        />
+        <Tip
+          title="Wertpapier-Depot beleihen statt verkaufen"
+          body="ETFs & Aktien können beliehen werden — Sie verlieren keine Renditechancen und haben trotzdem mehr EK."
+        />
+        <Tip
+          title="Förderungen prüfen"
+          body="Wohnbau­förderung (Bundesland), Jungfamilien-Bonus, Sanierungs­förderung. Spart oft 20–50 k über die Laufzeit."
+        />
+      </ul>
+    </div>
+  );
+}
+
+function Tip({ title, body }: { title: string; body: string }) {
+  return (
+    <li className="flex items-start gap-2 rounded-md bg-background/60 p-2.5">
+      <TrendingUp
+        className="mt-0.5 h-3.5 w-3.5 shrink-0 text-primary"
+        aria-hidden
+      />
+      <div>
+        <p className="font-medium">{title}</p>
+        <p className="text-xs text-muted-foreground">{body}</p>
+      </div>
+    </li>
+  );
+}
+
+function EkBreakdown() {
+  const result = useCheckStore((s) => s.result)!;
+  const rows = result.ekBreakdown.filter((r) => r.gezaehlt > 0);
+  if (rows.length === 0) return null;
+  return (
+    <details className="rounded-lg border bg-card p-4 text-sm shadow-sm">
+      <summary className="cursor-pointer font-semibold">
+        Ihr Eigenkapital im Detail
+      </summary>
+      <dl className="mt-3 space-y-1.5">
+        {rows.map((r) => (
+          <div
+            key={r.key}
+            className="flex items-baseline justify-between gap-3 border-b border-dashed pb-1.5 last:border-0"
+          >
+            <dt className="text-muted-foreground">
+              {r.label}
+              {r.faktor < 1 ? (
+                <span className="ml-1 text-xs">
+                  ({Math.round(r.faktor * 100)} %)
+                </span>
+              ) : null}
+            </dt>
+            <dd className="font-semibold tabular-nums">
+              {formatEuro(r.gezaehlt)}
+            </dd>
+          </div>
+        ))}
+        <div className="flex items-baseline justify-between gap-3 pt-2 text-base">
+          <dt className="font-semibold">Gesamt</dt>
+          <dd className="font-bold tabular-nums text-[color:var(--success)]">
+            {formatEuro(result.eigenkapital)}
+          </dd>
+        </div>
+      </dl>
+    </details>
   );
 }
 
@@ -215,15 +321,6 @@ function Stat({
         {value}
       </span>
       {sub ? <span className="text-xs text-muted-foreground">{sub}</span> : null}
-    </div>
-  );
-}
-
-function Tip({ title, children }: { title: string; children: React.ReactNode }) {
-  return (
-    <div className="rounded-md border bg-background p-3">
-      <p className="text-sm font-semibold">{title}</p>
-      <p className="mt-1 text-xs text-muted-foreground">{children}</p>
     </div>
   );
 }
