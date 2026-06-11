@@ -9,7 +9,7 @@
  * umstellen – die Schnittstelle bleibt gleich.
  */
 
-export type RateLimitKey = "extract" | "lead";
+export type RateLimitKey = "extract" | "lead" | "admin_login";
 
 export interface RateLimitConfig {
   windowMs: number;
@@ -35,6 +35,11 @@ const DEFAULT_LIMITS: Record<
   lead: {
     // Lead-Submission ist seltener Use-Case → großzügig auf der kurzen Seite,
     // hart auf der Tagesseite.
+    short: { windowMs: 60 * 1000, max: 5 },
+    long: { windowMs: 24 * 60 * 60 * 1000, max: 30 },
+  },
+  admin_login: {
+    // Brute-Force-Schutz: 5 Versuche/Min, 30 Versuche/Tag pro IP.
     short: { windowMs: 60 * 1000, max: 5 },
     long: { windowMs: 24 * 60 * 60 * 1000, max: 30 },
   },

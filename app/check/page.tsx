@@ -245,7 +245,6 @@ export default function CheckPage() {
   const step = useCheckStore((s) => s.step);
   const data = useCheckStore((s) => s.data);
   const setStep = useCheckStore((s) => s.setStep);
-  const update = useCheckStore((s) => s.update);
   const updateAssets = useCheckStore((s) => s.updateAssets);
   const setResult = useCheckStore((s) => s.setResult);
 
