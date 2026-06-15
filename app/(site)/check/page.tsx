@@ -2,7 +2,16 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
-import { ArrowLeft, ArrowRight, Building2, Search, Sparkles } from "lucide-react";
+import { motion } from "motion/react";
+import {
+  ArrowLeft,
+  ArrowRight,
+  Building2,
+  Check,
+  Lightbulb,
+  Search,
+  Sparkles,
+} from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -113,21 +122,29 @@ function AssetCard({
 }) {
   const counted = value * meta.faktor;
   return (
-    <div className="space-y-2 rounded-lg border bg-surface p-3 shadow-sm sm:p-4">
+    <motion.div
+      whileHover={{ y: -2 }}
+      transition={{ type: "spring", stiffness: 350, damping: 25 }}
+      className="space-y-2 rounded-lg border bg-surface p-3 shadow-sm transition-colors hover:border-primary/30 sm:p-4"
+    >
       <div>
         <p className="text-sm font-semibold">{meta.label}</p>
         <p className="text-xs text-muted-foreground">{meta.examples}</p>
       </div>
       <NumInput value={value} onChange={onChange} min={0} max={5_000_000} step={1000} suffix="€" placeholder="0" />
       {value > 0 ? (
-        <p className="text-xs font-medium text-success">
-          ✓ Zählt als Eigenkapital: {formatEuro(counted)}
+        <p className="flex items-center gap-1.5 text-xs font-medium text-success">
+          <Check className="h-3.5 w-3.5 shrink-0" aria-hidden />
+          Zählt als Eigenkapital: {formatEuro(counted)}
           {meta.faktor < 1 ? ` (${Math.round(meta.faktor * 100)} %)` : ""}
         </p>
       ) : (
-        <p className="text-xs italic text-muted-foreground">💡 {meta.hint}</p>
+        <p className="flex items-start gap-1.5 text-xs italic text-muted-foreground">
+          <Lightbulb className="mt-0.5 h-3.5 w-3.5 shrink-0" aria-hidden />
+          {meta.hint}
+        </p>
       )}
-    </div>
+    </motion.div>
   );
 }
 
@@ -410,16 +427,20 @@ function Step2({
           <NumInput id="immo-schuld" value={assets.immobilie_restschuld} onChange={(n) => updateAssets({ immobilie_restschuld: n })} min={0} max={10_000_000} step={5000} suffix="€" placeholder="0" />
         </div>
         {assets.immobilie_wert > 0 ? (
-          <p className="text-xs font-medium text-success">
-            ✓ Zusätzliches Eigenkapital:{" "}
-            {formatEuro(Math.max(0, assets.immobilie_wert * 0.7 - assets.immobilie_restschuld))}{" "}
-            <span className="font-normal text-muted-foreground">
-              (70 % vom Wert − Restschuld)
+          <p className="flex items-center gap-1.5 text-xs font-medium text-success">
+            <Check className="h-3.5 w-3.5 shrink-0" aria-hidden />
+            <span>
+              Zusätzliches Eigenkapital:{" "}
+              {formatEuro(Math.max(0, assets.immobilie_wert * 0.7 - assets.immobilie_restschuld))}{" "}
+              <span className="font-normal text-muted-foreground">
+                (70 % vom Wert − Restschuld)
+              </span>
             </span>
           </p>
         ) : (
-          <p className="text-xs italic text-muted-foreground">
-            💡 70 % des Werts minus Restschuld werden angerechnet.
+          <p className="flex items-start gap-1.5 text-xs italic text-muted-foreground">
+            <Lightbulb className="mt-0.5 h-3.5 w-3.5 shrink-0" aria-hidden />
+            70 % des Werts minus Restschuld werden angerechnet.
           </p>
         )}
       </div>
@@ -469,9 +490,12 @@ function Step3() {
           ].map(({ v, Icon, title, sub }) => {
             const active = data.objektStatus === v;
             return (
-              <button
+              <motion.button
                 key={v}
                 type="button"
+                whileTap={{ scale: 0.98 }}
+                whileHover={{ y: -2 }}
+                transition={{ type: "spring", stiffness: 350, damping: 25 }}
                 onClick={() => update({ objektStatus: v as CheckInput["objektStatus"] })}
                 className={`flex items-start gap-3 rounded-lg border bg-surface p-4 text-left shadow-sm transition-colors ${
                   active ? "border-primary ring-2 ring-primary/20" : "hover:bg-muted/40"
@@ -482,7 +506,7 @@ function Step3() {
                   <span className="block text-sm font-semibold">{title}</span>
                   <span className="block text-xs text-muted-foreground">{sub}</span>
                 </span>
-              </button>
+              </motion.button>
             );
           })}
         </div>
@@ -513,16 +537,19 @@ function Step3() {
           {(["wohnung", "haus"] as const).map((art) => {
             const active = data.immobilienart === art;
             return (
-              <button
+              <motion.button
                 key={art}
                 type="button"
+                whileTap={{ scale: 0.98 }}
+                whileHover={{ y: -2 }}
+                transition={{ type: "spring", stiffness: 350, damping: 25 }}
                 onClick={() => update({ immobilienart: art })}
                 className={`rounded-md border bg-surface p-3 text-sm font-medium shadow-sm transition-colors ${
                   active ? "border-primary ring-2 ring-primary/20" : "hover:bg-muted/40"
                 }`}
               >
                 {art === "wohnung" ? "Wohnung" : "Haus"}
-              </button>
+              </motion.button>
             );
           })}
         </div>
