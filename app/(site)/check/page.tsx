@@ -170,6 +170,25 @@ export default function CheckPage() {
     }).success;
   }, [step, data, assets]);
 
+  // Was fehlt dem aktuellen Schritt? (verhindert stummen toten Button)
+  const fehlt = useMemo(() => {
+    if (valid) return null;
+    if (step === 0) {
+      if (!data.netto || data.netto <= 0)
+        return "Bitte das Haushalts-Nettoeinkommen eingeben.";
+      return "Bitte die Eingaben prüfen.";
+    }
+    if (step === 1) {
+      return "Bitte mindestens einen Vermögenswert eingeben — auch ein kleines Sparguthaben zählt.";
+    }
+    const offen: string[] = [];
+    if (!data.objektStatus) offen.push("ob Sie schon ein Objekt im Blick haben");
+    if (!data.bundesland) offen.push("die Wunsch-Region");
+    if (!data.immobilienart) offen.push("Wohnung oder Haus");
+    if (offen.length === 0) return "Bitte die Eingaben prüfen.";
+    return `Bitte noch wählen: ${offen.join(", ")}.`;
+  }, [valid, step, data]);
+
   const progress = ((step + 1) / STEPS.length) * 100;
 
   function goNext() {
@@ -228,15 +247,25 @@ export default function CheckPage() {
           </CardContent>
         </Card>
 
-        <div className="flex items-center justify-between gap-3">
-          <Button type="button" variant="outline" size="lg" onClick={goBack}>
-            <ArrowLeft className="mr-1" aria-hidden />
-            Zurück
-          </Button>
-          <Button type="button" size="lg" disabled={!valid} onClick={goNext}>
-            {step === 2 ? "Auswertung starten" : "Weiter"}
-            <ArrowRight className="ml-1" aria-hidden />
-          </Button>
+        <div className="flex flex-col gap-2">
+          <div className="flex items-center justify-between gap-3">
+            <Button type="button" variant="outline" size="lg" onClick={goBack}>
+              <ArrowLeft className="mr-1" aria-hidden />
+              Zurück
+            </Button>
+            <Button type="button" size="lg" disabled={!valid} onClick={goNext}>
+              {step === 2 ? "Auswertung starten" : "Weiter"}
+              <ArrowRight className="ml-1" aria-hidden />
+            </Button>
+          </div>
+          {fehlt ? (
+            <p
+              role="status"
+              className="text-right text-xs text-muted-foreground"
+            >
+              {fehlt}
+            </p>
+          ) : null}
         </div>
       </div>
     </main>
