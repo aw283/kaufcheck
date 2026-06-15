@@ -5,8 +5,8 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  /* Brand */
-  --primary: #047857;
+  /* Brand — Trust-Navy (klar getrennt von Ampel-Grün = "leistbar") */
+  --primary: #1e3a8a;
   --primary-foreground: #ffffff;
 
   /* Ampel-Status */
@@ -32,12 +32,12 @@
   --secondary-foreground: #0a0a0a;
   --muted: #f1ede4;
   --muted-foreground: #5d5a52;
-  --accent: #e7f3ee;
-  --accent-foreground: #0a0a0a;
+  --accent: #eef2fb;
+  --accent-foreground: #1e3a8a;
 
   --border: rgba(0, 0, 0, 0.06);
   --input: rgba(0, 0, 0, 0.1);
-  --ring: #047857;
+  --ring: #1e3a8a;
 
   --radius: 12px;
 }

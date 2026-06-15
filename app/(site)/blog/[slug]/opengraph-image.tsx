@@ -26,7 +26,7 @@ export default async function OgImage({
           flexDirection: "column",
           justifyContent: "space-between",
           padding: "72px 80px",
-          background: "#047857",
+          background: "#1e3a8a",
           color: "#ffffff",
           fontFamily: "Georgia, serif",
         }}
