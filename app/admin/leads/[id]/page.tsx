@@ -257,10 +257,9 @@ export default async function LeadDetailPage({
                 )} € / Monat`}
                 formel={audit.verfuegbar.formel}
                 rows={[
-                  ["Netto/Monat", `${audit.verfuegbar.netto} €`],
+                  ["Eff. Netto/Monat", `${audit.verfuegbar.effektivNetto} €`],
                   ["DSTI max.", `${audit.verfuegbar.dstiMax * 100} %`],
                   ["Bestehende Raten", `${audit.verfuegbar.raten} €`],
-                  ["Fixkosten", `${audit.verfuegbar.fix} €`],
                 ]}
               />
               <AuditCard

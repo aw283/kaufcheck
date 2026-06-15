@@ -80,10 +80,12 @@ function LeadInner() {
                 monatlicheRate: result.monatlicheRate,
                 ekQuote: result.ekQuote,
                 eigenkapital: result.eigenkapital,
+                effektivNetto: result.effektivNetto,
                 assets: data.assets,
                 bundesland: data.bundesland,
                 immobilienart: data.immobilienart,
-                netto: data.netto,
+                objektStatus: data.objektStatus,
+                kinderAlter: data.kinderAlter,
               }
             : undefined,
         }),

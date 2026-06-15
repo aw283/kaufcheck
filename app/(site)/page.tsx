@@ -17,6 +17,7 @@ const EK_TABELLE: { asset: string; faktor: string }[] = [
   { asset: "Spar- & Bausparguthaben", faktor: "100 %" },
   { asset: "Wertpapiere, ETFs, Aktien", faktor: "≈ 70 %" },
   { asset: "Gold & Edelmetalle", faktor: "≈ 70 %" },
+  { asset: "Krypto (Bitcoin, ETH …)", faktor: "≈ 50 %" },
   { asset: "Lebensversicherung (Rückkaufswert)", faktor: "100 %" },
   { asset: "Schenkung / Erbe (zugesagt)", faktor: "100 %" },
   { asset: "Bestehende Immobilie", faktor: "≈ 70 % − Restschuld" },

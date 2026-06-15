@@ -3,15 +3,17 @@ import { z } from "zod";
 // --- Wizard Steps ---
 
 export const step1Schema = z.object({
-  netto: z.number().min(500, "Mindestens 500 €").max(50_000, "Max 50.000 €"),
+  netto: z.number().min(1, "Bitte Einkommen angeben").max(12_000_000),
+  nettoPeriode: z.enum(["monat", "jahr"]),
+  bonusJahr: z.number().min(0).max(5_000_000),
   raten: z.number().min(0).max(20_000, "Max 20.000 €"),
-  fix: z.number().min(0).max(20_000, "Max 20.000 €"),
 });
 
 export const assetsSchema = z.object({
   sparguthaben: z.number().min(0).max(5_000_000),
   wertpapiere: z.number().min(0).max(5_000_000),
   edelmetalle: z.number().min(0).max(5_000_000),
+  crypto: z.number().min(0).max(5_000_000),
   lebensversicherung: z.number().min(0).max(5_000_000),
   schenkung: z.number().min(0).max(5_000_000),
   immobilie_wert: z.number().min(0).max(10_000_000),
@@ -24,6 +26,7 @@ export const step2Schema = assetsSchema.refine(
     a.sparguthaben +
       a.wertpapiere +
       a.edelmetalle +
+      a.crypto +
       a.lebensversicherung +
       a.schenkung +
       a.immobilie_wert >
@@ -43,10 +46,10 @@ export const step3Schema = z.object({
     (v): v is (typeof IMMOART)[number] => (IMMOART as readonly string[]).includes(v),
     { message: "Bitte Immobilienart wählen" }
   ),
-  wunschKaufpreis: z.number().min(50_000).max(2_000_000),
+  objektStatus: z.enum(["im_auge", "suche_noch"]),
   alter: z.number().int().min(18, "Mind. 18").max(75, "Max 75"),
   erwachsene: z.number().int().min(1, "Mind. 1").max(4, "Max 4"),
-  kinder: z.number().int().min(0).max(8, "Max 8"),
+  kinderAlter: z.array(z.number().int().min(0).max(27)).max(8),
 });
 
 // --- Lead Form ---
@@ -87,10 +90,12 @@ export const leadApiSchema = z.object({
       monatlicheRate: z.number(),
       ekQuote: z.number(),
       eigenkapital: z.number(),
+      effektivNetto: z.number().optional(),
       assets: assetsSchema.optional(),
       bundesland: z.string().optional(),
       immobilienart: z.string().optional(),
-      netto: z.number().optional(),
+      objektStatus: z.enum(["im_auge", "suche_noch"]).optional(),
+      kinderAlter: z.array(z.number()).optional(),
     })
     .optional(),
 });

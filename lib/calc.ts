@@ -8,6 +8,9 @@ export const CONFIG = {
   LAUFZEIT_DEFAULT: 30,
   ENDALTER_MAX: 80,
   NEBENKOSTEN_QUOTE: 0.1,
+  // Variables Einkommen (Bonus/Provision) wird von Banken konservativ
+  // angerechnet – wir nehmen 50 % des Jahresbetrags.
+  BONUS_ANRECHNUNG: 0.5,
 } as const;
 
 // Beleihungsfaktoren wie sie AT-Banken (Erste, Raiffeisen, BAWAG, ING)
@@ -16,6 +19,9 @@ export const BELEIHUNG = {
   sparguthaben: 1.0,
   wertpapiere: 0.7,
   edelmetalle: 0.7,
+  // Krypto wird von den meisten Banken (noch) gar nicht akzeptiert;
+  // wo doch, dann stark abgewertet. Sehr konservativ.
+  crypto: 0.5,
   lebensversicherung: 1.0,
   schenkung: 1.0,
   // Immobilie wird gesondert berechnet: 70% Verkehrswert − Restschuld
@@ -26,11 +32,14 @@ export type Bundesland =
   | "wien" | "noe" | "ooe" | "sbg" | "tirol" | "vbg" | "stmk" | "ktn" | "bgld";
 export type Immobilienart = "wohnung" | "haus";
 export type Status = "leistbar" | "grenzfall" | "nicht_leistbar";
+export type NettoPeriode = "monat" | "jahr";
+export type ObjektStatus = "im_auge" | "suche_noch";
 
 export interface Assets {
   sparguthaben: number;
   wertpapiere: number;
   edelmetalle: number;
+  crypto: number;
   lebensversicherung: number;
   schenkung: number;
   immobilie_wert: number;
@@ -38,16 +47,22 @@ export interface Assets {
 }
 
 export interface CheckInput {
+  /** Betrag wie eingegeben (interpretiert über nettoPeriode). */
   netto: number;
+  nettoPeriode: NettoPeriode;
+  /** Variables Gehalt / Bonus / Provision pro Jahr (netto). */
+  bonusJahr: number;
+  /** Bestehende monatliche Kreditraten. */
   raten: number;
-  fix: number;
   assets: Assets;
   bundesland: Bundesland;
   immobilienart: Immobilienart;
-  wunschKaufpreis: number;
+  /** Hat die Person schon ein konkretes Objekt? */
+  objektStatus: ObjektStatus;
   alter: number;
   erwachsene: number;
-  kinder: number;
+  /** Alter jedes Kindes (Länge = Anzahl Kinder). */
+  kinderAlter: number[];
 }
 
 export interface EkRow {
@@ -63,6 +78,8 @@ export interface CheckResult {
   maxKaufpreis: number;
   maxKredit: number;
   monatlicheRate: number;
+  /** Effektives anrechenbares Monatsnetto (inkl. anteiligem Bonus). */
+  effektivNetto: number;
   eigenkapital: number;
   ekQuote: number;
   nebenkosten: number;
@@ -79,6 +96,15 @@ function int(n: unknown, min: number, max: number, fb: number): number {
   return Math.floor(num(n, min, max, fb));
 }
 
+/** Rechnet Eingabe-Betrag + Bonus in ein anrechenbares Monatsnetto um. */
+export function effektivesMonatsnetto(input: CheckInput): number {
+  const betrag = num(input.netto, 0, 12_000_000);
+  const monatsNetto = input.nettoPeriode === "jahr" ? betrag / 12 : betrag;
+  const bonus = num(input.bonusJahr, 0, 5_000_000);
+  const bonusMonatlich = (bonus * CONFIG.BONUS_ANRECHNUNG) / 12;
+  return Math.min(1_000_000, monatsNetto + bonusMonatlich);
+}
+
 export function eigenkapitalAus(a: Assets): {
   total: number;
   rows: EkRow[];
@@ -86,6 +112,7 @@ export function eigenkapitalAus(a: Assets): {
   const sparguthaben = num(a.sparguthaben, 0, 5_000_000);
   const wertpapiere = num(a.wertpapiere, 0, 5_000_000);
   const edelmetalle = num(a.edelmetalle, 0, 5_000_000);
+  const crypto = num(a.crypto, 0, 5_000_000);
   const lebensvers = num(a.lebensversicherung, 0, 5_000_000);
   const schenkung = num(a.schenkung, 0, 5_000_000);
   const immoWert = num(a.immobilie_wert, 0, 10_000_000);
@@ -116,6 +143,13 @@ export function eigenkapitalAus(a: Assets): {
       faktor: BELEIHUNG.edelmetalle,
     },
     {
+      key: "crypto",
+      label: "Krypto (Bitcoin, ETH …)",
+      raw: crypto,
+      gezaehlt: crypto * BELEIHUNG.crypto,
+      faktor: BELEIHUNG.crypto,
+    },
+    {
       key: "lebensversicherung",
       label: "Lebensversicherung (Rückkaufswert)",
       raw: lebensvers,
@@ -142,65 +176,28 @@ export function eigenkapitalAus(a: Assets): {
   return { total, rows };
 }
 
-export function berechne(input: CheckInput): CheckResult {
-  const alter = int(input.alter, 18, 120, 35);
-  const netto = num(input.netto, 0, 1_000_000);
-  const raten = num(input.raten, 0, 500_000);
-  const fix = num(input.fix, 0, 500_000);
-
-  const { total: eigenkapital, rows: ekBreakdown } = eigenkapitalAus(
-    input.assets
-  );
-
-  const laufzeitJahre = Math.max(
-    1,
-    Math.min(CONFIG.LAUFZEIT_DEFAULT, CONFIG.ENDALTER_MAX - alter)
-  );
-
-  const verfügbar = Math.max(0, netto * CONFIG.DSTI_MAX - raten - fix);
-
-  const i = CONFIG.ZINSSATZ_PA / 12;
-  const n = laufzeitJahre * 12;
-  const pvFactor = i === 0 ? n : (1 - Math.pow(1 + i, -n)) / i;
-  const maxKredit = verfügbar * pvFactor;
-
-  const gesamtbudget = eigenkapital + maxKredit;
-  const maxKaufpreis = gesamtbudget / (1 + CONFIG.NEBENKOSTEN_QUOTE);
-  const nebenkosten = maxKaufpreis * CONFIG.NEBENKOSTEN_QUOTE;
-  const ekQuote = gesamtbudget > 0 ? eigenkapital / gesamtbudget : 0;
-
-  let status: Status;
-  if (maxKaufpreis < 100_000 || verfügbar < 300) {
-    status = "nicht_leistbar";
-  } else if (
+function statusAus(
+  maxKaufpreis: number,
+  ekQuote: number,
+  verfuegbar: number
+): Status {
+  if (maxKaufpreis < 100_000 || verfuegbar < 300) return "nicht_leistbar";
+  if (
     (maxKaufpreis >= 100_000 && maxKaufpreis < 150_000) ||
     (ekQuote >= 0.15 && ekQuote < CONFIG.EK_QUOTE_MIN)
-  ) {
-    status = "grenzfall";
-  } else if (
+  )
+    return "grenzfall";
+  if (
     maxKaufpreis >= 150_000 &&
     ekQuote >= CONFIG.EK_QUOTE_MIN &&
-    verfügbar > 500
-  ) {
-    status = "leistbar";
-  } else {
-    status = "grenzfall";
-  }
+    verfuegbar > 500
+  )
+    return "leistbar";
+  return "grenzfall";
+}
 
-  return {
-    status,
-    maxKaufpreis: Math.round(maxKaufpreis),
-    maxKredit: Math.round(maxKredit),
-    monatlicheRate: Math.round(verfügbar),
-    eigenkapital: Math.round(eigenkapital),
-    ekQuote: Math.round(ekQuote * 100) / 100,
-    nebenkosten: Math.round(nebenkosten),
-    laufzeitJahre,
-    ekBreakdown: ekBreakdown.map((r) => ({
-      ...r,
-      gezaehlt: Math.round(r.gezaehlt),
-    })),
-  };
+export function berechne(input: CheckInput): CheckResult {
+  return berechneMitAudit(input).result;
 }
 
 // ============================================================
@@ -218,10 +215,9 @@ export interface CalcAudit {
     endalterMax: number;
   };
   verfuegbar: CalcAuditStep & {
-    netto: number;
+    effektivNetto: number;
     dstiMax: number;
     raten: number;
-    fix: number;
   };
   pvFactor: CalcAuditStep & {
     zinsPa: number;
@@ -264,73 +260,43 @@ export function berechneMitAudit(
   input: CheckInput
 ): { result: CheckResult; audit: CalcAudit } {
   const alter = int(input.alter, 18, 120, 35);
-  const netto = num(input.netto, 0, 1_000_000);
   const raten = num(input.raten, 0, 500_000);
-  const fix = num(input.fix, 0, 500_000);
+  const effektivNetto = effektivesMonatsnetto(input);
 
   const ek = eigenkapitalAus(input.assets);
   const eigenkapital = ek.total;
 
-  // 1) Laufzeit
   const laufzeitJahre = Math.max(
     1,
     Math.min(CONFIG.LAUFZEIT_DEFAULT, CONFIG.ENDALTER_MAX - alter)
   );
 
-  // 2) Verfügbar für Schuldendienst
-  const verfuegbar = Math.max(0, netto * CONFIG.DSTI_MAX - raten - fix);
+  const verfuegbar = Math.max(0, effektivNetto * CONFIG.DSTI_MAX - raten);
 
-  // 3) PV-Annuitäten-Faktor
   const i = CONFIG.ZINSSATZ_PA / 12;
   const n = laufzeitJahre * 12;
   const pvFactor = i === 0 ? n : (1 - Math.pow(1 + i, -n)) / i;
-
-  // 4) Max. Kredit
   const maxKredit = verfuegbar * pvFactor;
 
-  // 5) Gesamtbudget & Kaufpreis
   const gesamtbudget = eigenkapital + maxKredit;
   const maxKaufpreis = gesamtbudget / (1 + CONFIG.NEBENKOSTEN_QUOTE);
   const nebenkosten = maxKaufpreis * CONFIG.NEBENKOSTEN_QUOTE;
   const ekQuote = gesamtbudget > 0 ? eigenkapital / gesamtbudget : 0;
 
-  // 6) Status-Entscheidung (Regeln in dieser Reihenfolge geprueft)
-  const geprueft: string[] = [];
-  let status: Status;
-  let griff: string;
+  const status = statusAus(maxKaufpreis, ekQuote, verfuegbar);
 
-  const r1 = `Wenn maxKaufpreis < 100.000 ODER verfügbar < 300 → nicht_leistbar`;
-  geprueft.push(r1);
-  if (maxKaufpreis < 100_000 || verfuegbar < 300) {
-    status = "nicht_leistbar";
-    griff = r1;
-  } else {
-    const r2 = `Wenn maxKaufpreis im Band 100k–150k ODER ekQuote 15%–20% → grenzfall`;
-    geprueft.push(r2);
-    if (
-      (maxKaufpreis >= 100_000 && maxKaufpreis < 150_000) ||
-      (ekQuote >= 0.15 && ekQuote < CONFIG.EK_QUOTE_MIN)
-    ) {
-      status = "grenzfall";
-      griff = r2;
-    } else {
-      const r3 = `Wenn maxKaufpreis ≥ 150k UND ekQuote ≥ 20% UND verfügbar > 500 → leistbar`;
-      geprueft.push(r3);
-      if (
-        maxKaufpreis >= 150_000 &&
-        ekQuote >= CONFIG.EK_QUOTE_MIN &&
-        verfuegbar > 500
-      ) {
-        status = "leistbar";
-        griff = r3;
-      } else {
-        status = "grenzfall";
-        griff = "Fallback (keine Regel hat klar gegriffen) → grenzfall";
-      }
-    }
-  }
+  const geprueft = [
+    `Wenn maxKaufpreis < 100.000 ODER verfügbar < 300 → nicht_leistbar`,
+    `Wenn maxKaufpreis im Band 100k–150k ODER ekQuote 15%–20% → grenzfall`,
+    `Wenn maxKaufpreis ≥ 150k UND ekQuote ≥ 20% UND verfügbar > 500 → leistbar`,
+  ];
+  const griff =
+    status === "nicht_leistbar"
+      ? geprueft[0]
+      : status === "leistbar"
+        ? geprueft[2]
+        : geprueft[1];
 
-  // EK-Breakdown gerundet für Result-Output
   const ekBreakdownRounded = ek.rows.map((r) => ({
     ...r,
     gezaehlt: Math.round(r.gezaehlt),
@@ -341,6 +307,7 @@ export function berechneMitAudit(
     maxKaufpreis: Math.round(maxKaufpreis),
     maxKredit: Math.round(maxKredit),
     monatlicheRate: Math.round(verfuegbar),
+    effektivNetto: Math.round(effektivNetto),
     eigenkapital: Math.round(eigenkapital),
     ekQuote: Math.round(ekQuote * 100) / 100,
     nebenkosten: Math.round(nebenkosten),
@@ -357,11 +324,10 @@ export function berechneMitAudit(
       ergebnis: laufzeitJahre,
     },
     verfuegbar: {
-      netto,
+      effektivNetto: Math.round(effektivNetto),
       dstiMax: CONFIG.DSTI_MAX,
       raten,
-      fix,
-      formel: `max(0, ${fmt(netto)} × ${CONFIG.DSTI_MAX} − ${fmt(raten)} − ${fmt(fix)}) = ${fmt(verfuegbar)} €/Monat`,
+      formel: `max(0, ${fmt(effektivNetto)} × ${CONFIG.DSTI_MAX} − ${fmt(raten)}) = ${fmt(verfuegbar)} €/Monat`,
       ergebnis: Math.round(verfuegbar),
     },
     pvFactor: {
@@ -425,6 +391,7 @@ export function emptyAssets(): Assets {
     sparguthaben: 0,
     wertpapiere: 0,
     edelmetalle: 0,
+    crypto: 0,
     lebensversicherung: 0,
     schenkung: 0,
     immobilie_wert: 0,

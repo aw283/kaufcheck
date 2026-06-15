@@ -78,17 +78,19 @@ export async function POST(request: Request) {
       // reicht das vollkommen aus.
       if (check && leadId) {
         const reconstructedInput: CheckInput = {
-          netto: check.netto ?? 0,
+          netto: check.effektivNetto ?? 0,
+          nettoPeriode: "monat",
+          bonusJahr: 0,
           raten: 0,
-          fix: 0,
           assets: check.assets ?? emptyAssets(),
           bundesland: (check.bundesland ?? "wien") as CheckInput["bundesland"],
           immobilienart: (check.immobilienart ??
             "wohnung") as CheckInput["immobilienart"],
-          wunschKaufpreis: 250_000,
+          objektStatus: (check.objektStatus ??
+            "suche_noch") as CheckInput["objektStatus"],
           alter: 35,
           erwachsene: 1,
-          kinder: 0,
+          kinderAlter: check.kinderAlter ?? [],
         };
         const { result, audit } = berechneMitAudit(reconstructedInput);
         const { error: calcErr } = await supabase.from("calculations").insert({
@@ -144,9 +146,11 @@ export async function POST(request: Request) {
           `Monatsrate:    ${check.monatlicheRate} EUR`,
           `EK-Quote:      ${Math.round(check.ekQuote * 100)} %`,
           `Eigenkapital:  ${check.eigenkapital} EUR (gesamt)`,
+          `Objekt:        ${check.objektStatus === "im_auge" ? "hat konkretes Objekt" : "sucht noch"}`,
           `Bundesland:    ${check.bundesland ?? "—"}`,
           `Immobilienart: ${check.immobilienart ?? "—"}`,
-          `Netto/Monat:   ${check.netto ?? "—"} EUR`,
+          `Eff. Netto/M.: ${check.effektivNetto ?? "—"} EUR (inkl. anteil. Bonus)`,
+          `Kinder:        ${check.kinderAlter && check.kinderAlter.length > 0 ? check.kinderAlter.join(", ") + " J." : "keine"}`,
           ``,
           `--- Vermögensaufstellung ---`,
           check.assets
@@ -154,6 +158,7 @@ export async function POST(request: Request) {
                 `Sparguthaben:     ${check.assets.sparguthaben} EUR`,
                 `Wertpapiere:      ${check.assets.wertpapiere} EUR`,
                 `Edelmetalle:      ${check.assets.edelmetalle} EUR`,
+                `Krypto:           ${check.assets.crypto} EUR`,
                 `Lebensvers.:      ${check.assets.lebensversicherung} EUR`,
                 `Schenkung/Erbe:   ${check.assets.schenkung} EUR`,
                 `Bestehende Immo:  ${check.assets.immobilie_wert} EUR (Restschuld: ${check.assets.immobilie_restschuld} EUR)`,
