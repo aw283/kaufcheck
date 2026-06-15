@@ -8,6 +8,7 @@ import {
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
+import { Hero } from "@/components/hero";
 import { BlogCard } from "@/components/blog-card";
 import { getAllPosts } from "@/lib/blog";
 
@@ -73,61 +74,7 @@ export default function LandingPage() {
       />
 
       {/* HERO */}
-      <section className="border-b bg-surface">
-        <div className="mx-auto grid w-full max-w-6xl gap-10 px-5 py-16 sm:py-24 lg:grid-cols-[1.3fr_1fr] lg:items-center">
-          <div className="animate-in fade-in-0 duration-500">
-            <p className="inline-flex items-center gap-2 rounded-full border px-3 py-1 text-xs font-medium text-muted-foreground">
-              <span className="flex gap-0.5" aria-hidden>
-                <span className="h-2 w-2 rounded-full bg-error" />
-                <span className="h-2 w-2 rounded-full bg-warning" />
-                <span className="h-2 w-2 rounded-full bg-success" />
-              </span>
-              Leistbarkeits-Check für Österreich
-            </p>
-            <h1 className="mt-5 text-5xl leading-[1.05] sm:text-6xl lg:text-7xl">
-              Welche Immobilie können Sie sich leisten?
-            </h1>
-            <p className="mt-5 max-w-lg text-lg text-muted-foreground">
-              Klare Ansage statt Bank-Geblubber: In zwei Minuten wissen Sie,
-              was geht — grün, gelb oder rot. Mit denselben Regeln, die Ihre
-              Bank anwendet.
-            </p>
-            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-              <Button asChild size="xl" className="px-7 text-base">
-                <Link href="/check">
-                  Leistbarkeit prüfen
-                  <ArrowRight aria-hidden />
-                </Link>
-              </Button>
-              <Button asChild variant="outline" size="xl" className="px-7 text-base">
-                <Link href="#wie">Wie es funktioniert</Link>
-              </Button>
-            </div>
-            <p className="mt-4 text-xs text-muted-foreground">
-              Kostenlos · Ohne Registrierung · KIM-V-konform
-            </p>
-          </div>
-
-          {/* Ampel-Visual */}
-          <div className="hidden lg:block" aria-hidden>
-            <div className="mx-auto w-fit space-y-4 rounded-2xl border bg-background p-8 shadow-sm">
-              {[
-                { c: "bg-error/15 text-error", label: "Noch nicht", value: "rot" },
-                { c: "bg-warning/15 text-warning", label: "Mit Anpassungen", value: "gelb" },
-                { c: "bg-success/15 text-success", label: "Leistbar", value: "grün" },
-              ].map((r) => (
-                <div
-                  key={r.label}
-                  className={`flex w-64 items-center justify-between rounded-xl px-5 py-4 ${r.c}`}
-                >
-                  <span className="text-sm font-semibold">{r.label}</span>
-                  <span className="font-serif text-xl">{r.value}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
+      <Hero />
 
       {/* WIE ES FUNKTIONIERT */}
       <section id="wie" className="scroll-mt-20">
