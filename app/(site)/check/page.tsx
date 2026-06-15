@@ -26,7 +26,6 @@ import {
   type CheckInput,
 } from "@/lib/calc";
 import { step1Schema, step2Schema, step3Schema } from "@/lib/schemas";
-import { SiteFooter } from "@/components/site-footer";
 
 const STEPS = [
   { label: "Einkommen" },
@@ -344,7 +343,6 @@ export default function CheckPage() {
         </div>
       </div>
 
-      <SiteFooter />
     </main>
   );
 }

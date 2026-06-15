@@ -114,15 +114,15 @@ export async function POST(request: Request) {
   // 2) Mail-Versand via Resend
   // ----------------------------------------------------------------
   const to =
-    process.env.LEAD_NOTIFICATION_EMAIL || "leads@wohnkredit-check.at";
+    process.env.LEAD_NOTIFICATION_EMAIL || "leads@immoampel.at";
   const from =
     process.env.LEAD_NOTIFICATION_FROM ||
-    "Wohnkredit-Check <onboarding@resend.dev>";
+    "immoampel <onboarding@resend.dev>";
   const apiKey = process.env.RESEND_API_KEY;
 
   const subject = `Neuer Lead [${typ}]: ${lead.vorname} ${lead.nachname}`;
   const text = [
-    `Neuer Lead via Wohnkredit-Check.`,
+    `Neuer Lead via immoampel.`,
     ``,
     `Typ:           ${typ}`,
     `Zeitpunkt:     ${createdAt}`,

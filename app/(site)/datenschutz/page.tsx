@@ -1,15 +1,14 @@
 import Link from "next/link";
 import { ArrowLeft, Mail, ShieldCheck } from "lucide-react";
 
-import { SiteFooter } from "@/components/site-footer";
 
 export const metadata = {
   title: "Datenschutz",
   description:
-    "Wie wir mit Ihren Daten im Wohnkredit-Check umgehen – DSGVO-konform.",
+    "Wie wir mit Ihren Daten im immoampel umgehen – DSGVO-konform.",
 };
 
-const KONTAKT_EMAIL = "datenschutz@wohnkredit-check.at";
+const KONTAKT_EMAIL = "datenschutz@immoampel.at";
 
 export default function DatenschutzPage() {
   return (
@@ -139,7 +138,6 @@ export default function DatenschutzPage() {
         </Section>
       </div>
 
-      <SiteFooter />
     </main>
   );
 }

@@ -18,7 +18,6 @@ import {
 import { Button } from "@/components/ui/button";
 import { useCheckStore } from "@/lib/store";
 import { formatEuro } from "@/lib/calc";
-import { SiteFooter } from "@/components/site-footer";
 
 export default function ErgebnisPage() {
   const router = useRouter();
@@ -69,7 +68,6 @@ export default function ErgebnisPage() {
         </p>
       </div>
 
-      <SiteFooter />
     </main>
   );
 }

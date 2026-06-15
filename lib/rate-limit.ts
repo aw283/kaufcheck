@@ -9,7 +9,12 @@
  * umstellen – die Schnittstelle bleibt gleich.
  */
 
-export type RateLimitKey = "extract" | "lead" | "admin_login";
+export type RateLimitKey =
+  | "extract"
+  | "lead"
+  | "admin_login"
+  | "newsletter"
+  | "kontakt";
 
 export interface RateLimitConfig {
   windowMs: number;
@@ -42,6 +47,14 @@ const DEFAULT_LIMITS: Record<
     // Brute-Force-Schutz: 5 Versuche/Min, 30 Versuche/Tag pro IP.
     short: { windowMs: 60 * 1000, max: 5 },
     long: { windowMs: 24 * 60 * 60 * 1000, max: 30 },
+  },
+  newsletter: {
+    short: { windowMs: 60 * 1000, max: 3 },
+    long: { windowMs: 24 * 60 * 60 * 1000, max: 20 },
+  },
+  kontakt: {
+    short: { windowMs: 60 * 1000, max: 3 },
+    long: { windowMs: 24 * 60 * 60 * 1000, max: 15 },
   },
 };
 

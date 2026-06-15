@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 
-import { SiteFooter } from "@/components/site-footer";
 
 export const metadata = { title: "Impressum" };
 
@@ -35,7 +34,7 @@ export default function ImpressumPage() {
             [PLZ + Ort], Österreich
             <br />
             <br />
-            E-Mail: kontakt@wohnkredit-check.at
+            E-Mail: kontakt@immoampel.at
             <br />
             Telefon: [+43 …]
           </address>
@@ -52,7 +51,7 @@ export default function ImpressumPage() {
           <h2 className="text-base font-semibold">Unternehmensgegenstand</h2>
           <p className="mt-2 text-muted-foreground">
             Vermittlung von Finanzierungs- und Immobilienberatungs-Leistungen
-            durch Weiterleitung an unabhängige Partner. Wohnkredit-Check ist
+            durch Weiterleitung an unabhängige Partner. immoampel ist
             selbst kein Kreditgeber und kein Makler.
           </p>
         </section>
@@ -68,7 +67,6 @@ export default function ImpressumPage() {
         </section>
       </div>
 
-      <SiteFooter />
     </main>
   );
 }

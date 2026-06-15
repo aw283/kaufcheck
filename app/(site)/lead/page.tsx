@@ -28,7 +28,6 @@ import {
 } from "@/components/ui/select";
 import { leadFormSchema, type LeadForm } from "@/lib/schemas";
 import { useCheckStore } from "@/lib/store";
-import { SiteFooter } from "@/components/site-footer";
 
 export default function LeadPage() {
   return (
@@ -328,7 +327,6 @@ function LeadInner() {
         </Form>
       </div>
 
-      <SiteFooter />
     </main>
   );
 }

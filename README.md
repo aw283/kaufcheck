@@ -1,8 +1,33 @@
-# Wohnkredit-Check
+# immoampel
 
-Lead-Gen-Funnel für österreichische Immobilien-Käufer.
-Berechnung KIM-V-konform mit Asset-Beleihung, Lead-Capture an Bank-/Makler-Partner,
-Admin-Backend mit Berechnungs-Audit.
+Klare Ansage statt Bank-Geblubber: SEO-getriebene Lead-Gen-Website für
+österreichische Immobilien-Käufer. KIM-V-konformer Leistbarkeits-Check mit
+Asset-Beleihung, Lead-Capture an Bank-/Makler-Partner, MDX-Blog, Förderungs-
+Pages je Bundesland und Admin-Backend mit Berechnungs-Audit.
+
+## Blog-Workflow
+
+Artikel sind MDX-Dateien in `content/blog/*.mdx`. Neuer Artikel:
+
+1. Datei `content/blog/mein-slug.mdx` anlegen
+2. Frontmatter setzen (Zod-validiert beim Build):
+   ```yaml
+   ---
+   title: "…"
+   description: "…"            # min. 20 Zeichen
+   category: "ratgeber"        # ratgeber|erklaerung|foerderung|vergleich|marktdaten
+   publishedAt: "2026-05-01"   # YYYY-MM-DD
+   author: "immoampel Redaktion"
+   draft: false                # true = nicht im Index
+   ---
+   ```
+3. Markdown schreiben. H2/H3 landen automatisch in der Inhalts-Navigation,
+   bekommen Anchor-Links (rehype-slug + autolink-headings).
+4. `npm run build` — der Slug ist sofort unter `/blog/mein-slug` live,
+   in Sitemap und RSS-Feed (`/blog/rss.xml`) automatisch enthalten.
+
+Förderungs-Inhalte sind datengetrieben in `lib/foerderungen.ts` — neue
+Bundesland-Felder dort ergänzen, kein neuer Page-Code nötig.
 
 ## Tech-Stack
 - Next.js 16 App Router + TypeScript + Tailwind v4

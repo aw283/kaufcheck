@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Inter } from "next/font/google";
+import { Inter, Instrument_Serif } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 
@@ -11,40 +11,50 @@ const inter = Inter({
   display: "swap",
 });
 
-const SITE_URL =
-  process.env.NEXT_PUBLIC_SITE_URL || "https://wohnkredit-check.at";
+const instrumentSerif = Instrument_Serif({
+  variable: "--font-instrument-serif",
+  subsets: ["latin"],
+  weight: "400",
+  display: "swap",
+});
+
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://immoampel.at";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: "Wohnkredit-Check – Welche Immobilie kann ich mir leisten?",
-    template: "%s | Wohnkredit-Check",
+    default: "immoampel – Welche Immobilie kann ich mir leisten?",
+    template: "%s | immoampel",
   },
   description:
-    "Kostenloser Leistbarkeits-Check für Ihre Wunschimmobilie in Österreich. In 2 Minuten Klarheit – KIM-V-konform, ohne Registrierung.",
-  applicationName: "Wohnkredit-Check",
+    "Klare Ansage statt Bank-Geblubber: Leistbarkeits-Check für Immobilien in Österreich. KIM-V-konform, kostenlos, ohne Registrierung.",
+  applicationName: "immoampel",
   alternates: { canonical: "/" },
   openGraph: {
     type: "website",
     locale: "de_AT",
-    siteName: "Wohnkredit-Check",
-    title: "Welche Immobilie kann ich mir leisten?",
+    siteName: "immoampel",
+    title: "immoampel – Welche Immobilie kann ich mir leisten?",
     description:
-      "In 2 Minuten Klarheit über Ihr Budget. Kostenlos. Ohne Registrierung.",
+      "Klare Ansage statt Bank-Geblubber. In 2 Minuten Klarheit über Ihr Budget.",
   },
+  robots: { index: true, follow: true },
 };
 
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  themeColor: "#0F4C81",
+  themeColor: "#047857",
 };
 
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="de" className={`${inter.variable} h-full antialiased`}>
+    <html
+      lang="de"
+      className={`${inter.variable} ${instrumentSerif.variable} h-full antialiased`}
+    >
       <body className="min-h-full flex flex-col bg-background text-foreground">
         {children}
         <Analytics />

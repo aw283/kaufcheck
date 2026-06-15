@@ -2,7 +2,6 @@ import Link from "next/link";
 import { CheckCircle2 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-import { SiteFooter } from "@/components/site-footer";
 
 export const metadata = {
   title: "Anfrage gesendet – Danke",
@@ -27,7 +26,6 @@ export default function DankePage() {
           <Link href="/">Zurück zur Startseite</Link>
         </Button>
       </div>
-      <SiteFooter />
     </main>
   );
 }
