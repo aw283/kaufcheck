@@ -78,11 +78,13 @@ export async function POST(request: Request) {
       // reicht das vollkommen aus.
       if (check && leadId) {
         const reconstructedInput: CheckInput = {
+          // netto = effektivNetto (enthält bereits den anteiligen Bonus),
+          // daher bonus hier bewusst 0, um Doppelzählung zu vermeiden.
           netto: check.effektivNetto ?? 0,
           nettoPeriode: "monat",
           bonus: 0,
           bonusPeriode: "jahr",
-          raten: 0,
+          raten: check.raten ?? 0,
           umschuldung: check.umschuldung ?? 0,
           assets: check.assets ?? emptyAssets(),
           bundesland: (check.bundesland ?? "wien") as CheckInput["bundesland"],
@@ -91,7 +93,7 @@ export async function POST(request: Request) {
           objektStatus: (check.objektStatus ??
             "suche_noch") as CheckInput["objektStatus"],
           nutzung: (check.nutzung ?? "eigennutzung") as CheckInput["nutzung"],
-          alter: 35,
+          alter: check.alter ?? 35,
           erwachsene: 1,
           kinderAlter: check.kinderAlter ?? [],
         };
@@ -155,6 +157,9 @@ export async function POST(request: Request) {
           `Bundesland:    ${check.bundesland ?? "—"}`,
           `Immobilienart: ${check.immobilienart ?? "—"}`,
           `Eff. Netto/M.: ${check.effektivNetto ?? "—"} EUR (inkl. anteil. Bonus)`,
+          `Bonus/Variabel:${check.bonus ? ` ${check.bonus} EUR / ${check.bonusPeriode === "monat" ? "Monat" : "Jahr"}` : " keiner"}`,
+          `Best. Raten:   ${check.raten ? `${check.raten} EUR/Monat (bleiben)` : "keine"}`,
+          `Alter:         ${check.alter ?? "—"}`,
           `Kinder:        ${check.kinderAlter && check.kinderAlter.length > 0 ? check.kinderAlter.join(", ") + " J." : "keine"}`,
           ``,
           `--- Vermögensaufstellung ---`,
