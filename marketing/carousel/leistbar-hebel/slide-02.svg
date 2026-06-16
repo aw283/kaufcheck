@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1350" width="1080" height="1350">
+  <defs>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Instrument+Serif&amp;family=Inter:wght@400;500;600;700&amp;display=swap');
+      .serif{font-family:'Instrument Serif',Georgia,'Times New Roman',serif;}
+      .sans{font-family:'Inter',system-ui,-apple-system,Arial,sans-serif;}
+    </style>
+  </defs>
+
+  <!-- Background Light -->
+  <rect width="1080" height="1350" fill="#faf8f5"/>
+
+  <!-- Konzentrische Kreise oben rechts -->
+  <circle cx="1010" cy="150" r="90"  fill="none" stroke="#e7e2d8" stroke-width="2" opacity="0.7"/>
+  <circle cx="1010" cy="150" r="170" fill="none" stroke="#e7e2d8" stroke-width="2" opacity="0.7"/>
+  <circle cx="1010" cy="150" r="260" fill="none" stroke="#e7e2d8" stroke-width="1.5" opacity="0.5"/>
+
+  <!-- Lockup oben links -->
+  <text x="80" y="104" class="serif" font-size="32" font-weight="400">
+    <tspan fill="#14213d">immo</tspan><tspan fill="#16a34a">ampel</tspan>
+  </text>
+  <text x="82" y="130" class="sans" font-size="12" letter-spacing="2.5" fill="#9aa1ad">IMMOAMPEL.AT</text>
+
+  <!-- Progress dots (Dot 2 aktiv) -->
+  <circle cx="912" cy="98" r="5" fill="#cdd2dc"/>
+  <circle cx="934" cy="98" r="5" fill="#14213d"/>
+  <circle cx="956" cy="98" r="5" fill="#cdd2dc"/>
+  <circle cx="978" cy="98" r="5" fill="#cdd2dc"/>
+  <circle cx="1000" cy="98" r="5" fill="#cdd2dc"/>
+
+  <!-- Eyebrow -->
+  <line x1="80" y1="298" x2="120" y2="298" stroke="#16a34a" stroke-width="3"/>
+  <text x="134" y="304" class="sans" font-size="14" font-weight="700" letter-spacing="3" fill="#16a34a">HEBEL 1 · ZWEITER KREDITNEHMER</text>
+
+  <!-- Intro-Text -->
+  <text x="80" y="380" class="serif" font-size="52" fill="#14213d">Der einfachste Hebel:</text>
+
+  <!-- Big Number -->
+  <text x="80" y="600" class="serif" font-size="280" fill="#16a34a">2×</text>
+
+  <!-- Erklärung unter der Zahl -->
+  <text x="80" y="684" class="sans" font-size="28" font-weight="600" fill="#14213d">anrechenbare Schuldendienst-Basis</text>
+
+  <!-- Trennlinie -->
+  <line x1="80" y1="724" x2="560" y2="724" stroke="#e7e2d8" stroke-width="2"/>
+
+  <!-- Body-Erklärung -->
+  <text x="80" y="790" class="sans" font-size="26" fill="#6b7280">Die KIM-V begrenzt den Schuldendienst</text>
+  <text x="80" y="828" class="sans" font-size="26" fill="#6b7280">auf max. <tspan font-weight="700" fill="#14213d">40 % des Haushalts-Nettos.</tspan></text>
+  <text x="80" y="898" class="sans" font-size="26" fill="#6b7280">Kommt ein zweiter Kreditnehmer dazu,</text>
+  <text x="80" y="936" class="sans" font-size="26" fill="#6b7280">verdoppelt sich die Einkommensbasis —</text>
+  <text x="80" y="974" class="sans" font-size="26" fill="#6b7280">der maximal mögliche Kredit steigt</text>
+  <text x="80" y="1012" class="sans" font-size="26" fill="#6b7280">entsprechend mit.</text>
+
+  <!-- Beispiel-Box -->
+  <rect x="80" y="1068" width="920" height="164" rx="16" fill="#f0fdf4" stroke="#86efac" stroke-width="1.5"/>
+  <text x="116" y="1114" class="sans" font-size="15" font-weight="700" letter-spacing="2" fill="#16a34a">BEISPIEL</text>
+  <text x="116" y="1152" class="sans" font-size="24" fill="#14213d">2.500 € Netto allein → 1.000 € Rate möglich</text>
+  <text x="116" y="1192" class="sans" font-size="24" fill="#14213d">+ 2.000 € Partner → 1.800 € Rate möglich</text>
+
+  <!-- Footer -->
+  <text x="540" y="1310" class="sans" font-size="15" font-weight="600" letter-spacing="2" fill="#9aa1ad" text-anchor="middle">Jetzt prüfen → immoampel.at</text>
+
+  <!-- Quelle -->
+  <text x="80" y="1338" class="sans" font-size="11" fill="#b0b7c3">Quelle: KIM-V (Kreditinstitute-Immobilienfinanzierungs-Maßnahmen-Verordnung, OeNB), DSTI-Grenze 40 %</text>
+</svg>

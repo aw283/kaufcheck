@@ -1,0 +1,95 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1350" width="1080" height="1350">
+  <defs>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Instrument+Serif&amp;family=Inter:wght@400;500;600;700&amp;display=swap');
+      .serif{font-family:'Instrument Serif',Georgia,'Times New Roman',serif;}
+      .sans{font-family:'Inter',system-ui,-apple-system,Arial,sans-serif;}
+    </style>
+    <radialGradient id="glow2" cx="80%" cy="20%" r="55%">
+      <stop offset="0%" stop-color="#1e3a8a" stop-opacity="0.30"/>
+      <stop offset="100%" stop-color="#0e1b3d" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="grid2" width="90" height="90" patternUnits="userSpaceOnUse">
+      <path d="M90 0H0V90" fill="none" stroke="#ffffff" stroke-opacity="0.045" stroke-width="1"/>
+    </pattern>
+  </defs>
+
+  <!-- Background Dark-Navy -->
+  <rect width="1080" height="1350" fill="#0e1b3d"/>
+  <rect width="1080" height="1350" fill="url(#grid2)"/>
+  <rect width="1080" height="1350" fill="url(#glow2)"/>
+
+  <!-- Lockup oben links -->
+  <text x="80" y="104" class="serif" font-size="32" font-weight="400">
+    <tspan fill="#ffffff">immo</tspan><tspan fill="#16a34a">ampel</tspan>
+  </text>
+  <text x="82" y="130" class="sans" font-size="12" letter-spacing="2.5" fill="#8b95a7">IMMOAMPEL.AT</text>
+
+  <!-- Progress dots (Dot 4 aktiv) -->
+  <circle cx="912" cy="98" r="5" fill="#34405e"/>
+  <circle cx="934" cy="98" r="5" fill="#34405e"/>
+  <circle cx="956" cy="98" r="5" fill="#34405e"/>
+  <circle cx="978" cy="98" r="5" fill="#ffffff"/>
+  <circle cx="1000" cy="98" r="5" fill="#34405e"/>
+
+  <!-- Eyebrow -->
+  <line x1="80" y1="278" x2="120" y2="278" stroke="#f59e0b" stroke-width="3"/>
+  <text x="134" y="284" class="sans" font-size="14" font-weight="700" letter-spacing="3" fill="#f59e0b">KIM-V · DIE LEITPLANKEN DER BANK</text>
+
+  <!-- Headline -->
+  <text x="80" y="386" class="serif" font-size="78" fill="#ffffff">So rechnet</text>
+  <text x="80" y="474" class="serif" font-size="78" fill="#ffffff">die Bank.</text>
+
+  <!-- Subline -->
+  <text x="80" y="546" class="sans" font-size="24" fill="#aeb6c6">Zwei Kennzahlen entscheiden über die Zusage.</text>
+
+  <!-- Divider -->
+  <line x1="80" y1="592" x2="1000" y2="592" stroke="#2a3d6b" stroke-width="1.5"/>
+
+  <!-- KPI 1: Eigenkapital-Quote -->
+  <text x="80" y="664" class="sans" font-size="13" font-weight="700" letter-spacing="3" fill="#aeb6c6">EIGENKAPITAL-QUOTE (MIN.)</text>
+
+  <!-- Bar track -->
+  <rect x="80" y="686" width="920" height="48" rx="8" fill="#1e2d52"/>
+  <!-- Bar fill: 20 % grün, 80 % grau -->
+  <rect x="80" y="686" width="184" height="48" rx="8" fill="#16a34a"/>
+  <!-- Label im Balken -->
+  <text x="172" y="718" class="sans" font-size="19" font-weight="700" fill="#ffffff" text-anchor="middle">20 %</text>
+  <!-- Label rechts -->
+  <text x="1000" y="718" class="sans" font-size="19" fill="#6b7c9e" text-anchor="end">80 % Kredit</text>
+  <!-- Erklärung -->
+  <text x="80" y="762" class="sans" font-size="21" fill="#aeb6c6">Mindestens 20 % des Kaufpreises (inkl. Nebenkosten)</text>
+  <text x="80" y="790" class="sans" font-size="21" fill="#aeb6c6">müssen aus Eigenmitteln stammen.</text>
+
+  <!-- Divider -->
+  <line x1="80" y1="836" x2="1000" y2="836" stroke="#2a3d6b" stroke-width="1.5"/>
+
+  <!-- KPI 2: Schuldendienstquote -->
+  <text x="80" y="904" class="sans" font-size="13" font-weight="700" letter-spacing="3" fill="#aeb6c6">SCHULDENDIENSTQUOTE (MAX.)</text>
+
+  <!-- Bar track -->
+  <rect x="80" y="926" width="920" height="48" rx="8" fill="#1e2d52"/>
+  <!-- Bar fill: 40 % amber -->
+  <rect x="80" y="926" width="368" height="48" rx="8" fill="#f59e0b"/>
+  <!-- Label im Balken -->
+  <text x="264" y="958" class="sans" font-size="19" font-weight="700" fill="#14213d" text-anchor="middle">40 %</text>
+  <!-- Label rechts -->
+  <text x="1000" y="958" class="sans" font-size="19" fill="#6b7c9e" text-anchor="end">verfügbares Netto</text>
+  <!-- Erklärung -->
+  <text x="80" y="1002" class="sans" font-size="21" fill="#aeb6c6">Alle monatlichen Kreditraten zusammen dürfen</text>
+  <text x="80" y="1030" class="sans" font-size="21" fill="#aeb6c6">max. 40 % des Haushalts-Nettos betragen.</text>
+
+  <!-- Divider -->
+  <line x1="80" y1="1076" x2="1000" y2="1076" stroke="#2a3d6b" stroke-width="1.5"/>
+
+  <!-- Takeaway -->
+  <text x="80" y="1148" class="sans" font-size="13" font-weight="700" letter-spacing="3" fill="#16a34a">DIE GUTE NACHRICHT</text>
+  <text x="80" y="1206" class="serif" font-size="48" fill="#ffffff">Die Hebel auf Slide 3</text>
+  <text x="80" y="1260" class="serif" font-size="48" fill="#16a34a">verbessern genau das.</text>
+
+  <!-- Footer -->
+  <text x="540" y="1316" class="sans" font-size="15" font-weight="600" letter-spacing="2" fill="#6b7488" text-anchor="middle">Jetzt prüfen → immoampel.at</text>
+
+  <!-- Quelle -->
+  <text x="80" y="1340" class="sans" font-size="11" fill="#3d5080">Quelle: KIM-V (BGBl. II Nr. 395/2022, OeNB) · EK-Quote 20 % · DSTI-Grenze 40 %</text>
+</svg>

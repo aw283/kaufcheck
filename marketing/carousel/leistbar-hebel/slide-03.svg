@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1350" width="1080" height="1350">
+  <defs>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Instrument+Serif&amp;family=Inter:wght@400;500;600;700&amp;display=swap');
+      .serif{font-family:'Instrument Serif',Georgia,'Times New Roman',serif;}
+      .sans{font-family:'Inter',system-ui,-apple-system,Arial,sans-serif;}
+    </style>
+  </defs>
+
+  <!-- Background Light -->
+  <rect width="1080" height="1350" fill="#faf8f5"/>
+
+  <!-- Konzentrische Kreise oben rechts -->
+  <circle cx="1010" cy="150" r="90"  fill="none" stroke="#e7e2d8" stroke-width="2" opacity="0.7"/>
+  <circle cx="1010" cy="150" r="170" fill="none" stroke="#e7e2d8" stroke-width="2" opacity="0.7"/>
+  <circle cx="1010" cy="150" r="260" fill="none" stroke="#e7e2d8" stroke-width="1.5" opacity="0.5"/>
+
+  <!-- Lockup oben links -->
+  <text x="80" y="104" class="serif" font-size="32" font-weight="400">
+    <tspan fill="#14213d">immo</tspan><tspan fill="#16a34a">ampel</tspan>
+  </text>
+  <text x="82" y="130" class="sans" font-size="12" letter-spacing="2.5" fill="#9aa1ad">IMMOAMPEL.AT</text>
+
+  <!-- Progress dots (Dot 3 aktiv) -->
+  <circle cx="912" cy="98" r="5" fill="#cdd2dc"/>
+  <circle cx="934" cy="98" r="5" fill="#cdd2dc"/>
+  <circle cx="956" cy="98" r="5" fill="#14213d"/>
+  <circle cx="978" cy="98" r="5" fill="#cdd2dc"/>
+  <circle cx="1000" cy="98" r="5" fill="#cdd2dc"/>
+
+  <!-- Eyebrow -->
+  <line x1="80" y1="248" x2="120" y2="248" stroke="#16a34a" stroke-width="3"/>
+  <text x="134" y="254" class="sans" font-size="14" font-weight="700" letter-spacing="3" fill="#16a34a">5 HEBEL, DIE WIRKEN</text>
+
+  <!-- Headline -->
+  <text x="80" y="334" class="serif" font-size="72" fill="#14213d">Was die Bank</text>
+  <text x="80" y="410" class="serif" font-size="72" fill="#14213d">wirklich prüft.</text>
+
+  <!-- Item 1 — Grün -->
+  <rect x="80" y="462" width="5" height="108" rx="2.5" fill="#16a34a"/>
+  <text x="106" y="486" class="sans" font-size="13" font-weight="700" letter-spacing="2" fill="#16a34a">HEBEL 1 · ZWEITER KREDITNEHMER</text>
+  <text x="104" y="524" class="serif" font-size="38" fill="#14213d">Doppeltes Einkommen zählt</text>
+  <text x="106" y="558" class="sans" font-size="20" fill="#6b7280">Schuldendienst-Spielraum verdoppelt sich</text>
+
+  <!-- Item 2 — Grün -->
+  <rect x="80" y="598" width="5" height="108" rx="2.5" fill="#16a34a"/>
+  <text x="106" y="622" class="sans" font-size="13" font-weight="700" letter-spacing="2" fill="#16a34a">HEBEL 2 · VERSTECKTES EIGENKAPITAL</text>
+  <text x="104" y="660" class="serif" font-size="38" fill="#14213d">Depot, Gold &amp; Schenkung</text>
+  <text x="106" y="694" class="sans" font-size="20" fill="#6b7280">Wertpapiere 70 %, Sparen 100 % anrechenbar</text>
+
+  <!-- Item 3 — Amber -->
+  <rect x="80" y="734" width="5" height="108" rx="2.5" fill="#f59e0b"/>
+  <text x="106" y="758" class="sans" font-size="13" font-weight="700" letter-spacing="2" fill="#d98306">HEBEL 3 · UMSCHULDUNG TEURER KREDITE</text>
+  <text x="104" y="796" class="serif" font-size="38" fill="#14213d">Bestehende Raten senken</text>
+  <text x="106" y="830" class="sans" font-size="20" fill="#6b7280">Weniger laufende Last = mehr Spielraum</text>
+
+  <!-- Item 4 — Navy -->
+  <rect x="80" y="870" width="5" height="108" rx="2.5" fill="#1e3a8a"/>
+  <text x="106" y="894" class="sans" font-size="13" font-weight="700" letter-spacing="2" fill="#1e3a8a">HEBEL 4 · BESTEHENDE IMMOBILIE</text>
+  <text x="104" y="932" class="serif" font-size="38" fill="#14213d">Als Sicherheit einbringen</text>
+  <text x="106" y="966" class="sans" font-size="20" fill="#6b7280">70 % des Verkehrswerts − Restschuld zählt</text>
+
+  <!-- Item 5 — Grün -->
+  <rect x="80" y="1006" width="5" height="108" rx="2.5" fill="#16a34a"/>
+  <text x="106" y="1030" class="sans" font-size="13" font-weight="700" letter-spacing="2" fill="#16a34a">HEBEL 5 · LANDES-FÖRDERUNG</text>
+  <text x="104" y="1068" class="serif" font-size="38" fill="#14213d">Bis zu 60.000 € je nach Bundesland</text>
+  <text x="106" y="1102" class="sans" font-size="20" fill="#6b7280">Zinsgünstige Darlehen &amp; Zuschüsse möglich</text>
+
+  <!-- Footer -->
+  <text x="540" y="1310" class="sans" font-size="15" font-weight="600" letter-spacing="2" fill="#9aa1ad" text-anchor="middle">Jetzt prüfen → immoampel.at</text>
+
+  <!-- Quelle -->
+  <text x="80" y="1338" class="sans" font-size="11" fill="#b0b7c3">Beleihungsfaktoren: lib/calc.ts (immoampel) · Förderungen: jeweilige Landesstellen AT</text>
+</svg>
