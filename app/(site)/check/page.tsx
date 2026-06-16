@@ -8,9 +8,11 @@ import {
   ArrowRight,
   Building2,
   Check,
+  Home,
   Lightbulb,
   Search,
   Sparkles,
+  TrendingUp,
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -172,8 +174,10 @@ export default function CheckPage() {
       return step1Schema.safeParse({
         netto: data.netto,
         nettoPeriode: data.nettoPeriode,
-        bonusJahr: data.bonusJahr,
+        bonus: data.bonus,
+        bonusPeriode: data.bonusPeriode,
         raten: data.raten,
+        umschuldung: data.umschuldung,
       }).success;
     }
     if (step === 1) return step2Schema.safeParse(assets).success;
@@ -181,6 +185,7 @@ export default function CheckPage() {
       bundesland: data.bundesland,
       immobilienart: data.immobilienart,
       objektStatus: data.objektStatus,
+      nutzung: data.nutzung,
       alter: data.alter,
       erwachsene: data.erwachsene,
       kinderAlter: data.kinderAlter ?? [],
@@ -200,6 +205,7 @@ export default function CheckPage() {
     }
     const offen: string[] = [];
     if (!data.objektStatus) offen.push("ob Sie schon ein Objekt im Blick haben");
+    if (!data.nutzung) offen.push("Eigennutzung oder Anlage");
     if (!data.bundesland) offen.push("die Wunsch-Region");
     if (!data.immobilienart) offen.push("Wohnung oder Haus");
     if (offen.length === 0) return "Bitte die Eingaben prüfen.";
@@ -293,10 +299,11 @@ function Step1() {
   const data = useCheckStore((s) => s.data);
   const update = useCheckStore((s) => s.update);
   const periode = data.nettoPeriode ?? "monat";
+  const bonusPeriode = data.bonusPeriode ?? "jahr";
   return (
     <>
       <h2 className="text-2xl font-semibold tracking-tight">
-        Einkommen des Haushalts
+        Einkommen &amp; Verpflichtungen
       </h2>
       <p className="text-sm text-muted-foreground">
         Netto. Bei Paaren: <strong>beide</strong> Einkommen zusammen.
@@ -342,17 +349,37 @@ function Step1() {
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="bonus">Variables Gehalt / Bonus pro Jahr</Label>
-        <NumInput
-          id="bonus"
-          value={data.bonusJahr}
-          onChange={(n) => update({ bonusJahr: n })}
-          min={0}
-          max={5_000_000}
-          step={500}
-          suffix="€"
-          placeholder="z. B. 6.000 (optional)"
-        />
+        <Label htmlFor="bonus">Variables Gehalt / Bonus / Provision</Label>
+        <div className="flex gap-2">
+          <div className="flex-1">
+            <NumInput
+              id="bonus"
+              value={data.bonus}
+              onChange={(n) => update({ bonus: n })}
+              min={0}
+              max={5_000_000}
+              step={bonusPeriode === "jahr" ? 500 : 50}
+              suffix="€"
+              placeholder={bonusPeriode === "jahr" ? "z. B. 6.000 (optional)" : "z. B. 500 (optional)"}
+            />
+          </div>
+          <div className="inline-flex shrink-0 overflow-hidden rounded-md border">
+            {(["monat", "jahr"] as const).map((p) => (
+              <button
+                key={p}
+                type="button"
+                onClick={() => update({ bonusPeriode: p })}
+                className={`px-3 py-2 text-sm font-medium transition-colors ${
+                  bonusPeriode === p
+                    ? "bg-primary text-primary-foreground"
+                    : "bg-surface hover:bg-muted"
+                }`}
+              >
+                {p === "monat" ? "/ Monat" : "/ Jahr"}
+              </button>
+            ))}
+          </div>
+        </div>
         <p className="text-xs text-muted-foreground">
           Provisionen, Boni, Überstundenpauschalen. Wird konservativ zu 50 %
           angerechnet — so wie Banken es tun.
@@ -360,7 +387,7 @@ function Step1() {
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="raten">Bestehende Kreditraten pro Monat</Label>
+        <Label htmlFor="raten">Bestehende Kreditraten pro Monat (die bleiben)</Label>
         <NumInput
           id="raten"
           value={data.raten}
@@ -371,6 +398,32 @@ function Step1() {
           suffix="€"
           placeholder="0"
         />
+        <p className="text-xs text-muted-foreground">
+          Laufende Raten, die weiterlaufen sollen (z. B. Auto-Leasing). Mindern
+          Ihren Spielraum.
+        </p>
+      </div>
+
+      <div className="space-y-2 rounded-lg border-2 border-primary/30 bg-primary/5 p-3 shadow-sm sm:p-4">
+        <Label htmlFor="umschuldung" className="flex items-center gap-1.5">
+          <Sparkles className="h-3.5 w-3.5 text-primary" aria-hidden />
+          Kredite umschulden / mitfinanzieren?
+        </Label>
+        <NumInput
+          id="umschuldung"
+          value={data.umschuldung}
+          onChange={(n) => update({ umschuldung: n })}
+          min={0}
+          max={10_000_000}
+          step={1000}
+          suffix="€"
+          placeholder="z. B. 25.000 (optional)"
+        />
+        <p className="text-xs text-muted-foreground">
+          Offene Restschuld teurer Konsum-, Auto- oder Altkredite, die Sie in
+          die neue Finanzierung bündeln wollen. Oft günstiger — und schafft
+          Spielraum, weil die alte Rate wegfällt.
+        </p>
       </div>
     </>
   );
@@ -497,6 +550,38 @@ function Step3() {
                 whileHover={{ y: -2 }}
                 transition={{ type: "spring", stiffness: 350, damping: 25 }}
                 onClick={() => update({ objektStatus: v as CheckInput["objektStatus"] })}
+                className={`flex items-start gap-3 rounded-lg border bg-surface p-4 text-left shadow-sm transition-colors ${
+                  active ? "border-primary ring-2 ring-primary/20" : "hover:bg-muted/40"
+                }`}
+              >
+                <Icon className="mt-0.5 h-5 w-5 shrink-0 text-primary" aria-hidden />
+                <span>
+                  <span className="block text-sm font-semibold">{title}</span>
+                  <span className="block text-xs text-muted-foreground">{sub}</span>
+                </span>
+              </motion.button>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* Nutzung */}
+      <div className="space-y-2">
+        <Label>Eigennutzung oder Kapitalanlage?</Label>
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+          {[
+            { v: "eigennutzung", Icon: Home, title: "Eigennutzung", sub: "Ich will selbst darin wohnen" },
+            { v: "anlage", Icon: TrendingUp, title: "Kapitalanlage", sub: "Vermieten / als Investment" },
+          ].map(({ v, Icon, title, sub }) => {
+            const active = data.nutzung === v;
+            return (
+              <motion.button
+                key={v}
+                type="button"
+                whileTap={{ scale: 0.98 }}
+                whileHover={{ y: -2 }}
+                transition={{ type: "spring", stiffness: 350, damping: 25 }}
+                onClick={() => update({ nutzung: v as CheckInput["nutzung"] })}
                 className={`flex items-start gap-3 rounded-lg border bg-surface p-4 text-left shadow-sm transition-colors ${
                   active ? "border-primary ring-2 ring-primary/20" : "hover:bg-muted/40"
                 }`}

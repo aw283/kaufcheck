@@ -10,12 +10,15 @@ export type StepIndex = 0 | 1 | 2;
 const INITIAL: Partial<CheckInput> = {
   netto: 0,
   nettoPeriode: "monat",
-  bonusJahr: 0,
+  bonus: 0,
+  bonusPeriode: "jahr",
   raten: 0,
+  umschuldung: 0,
   assets: emptyAssets(),
   alter: 35,
   erwachsene: 1,
   kinderAlter: [],
+  // nutzung & objektStatus bewusst offen -> Nutzer muss wählen
 };
 
 interface State {

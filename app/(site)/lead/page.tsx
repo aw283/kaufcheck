@@ -81,10 +81,12 @@ function LeadInner() {
                 ekQuote: result.ekQuote,
                 eigenkapital: result.eigenkapital,
                 effektivNetto: result.effektivNetto,
+                umschuldung: result.umschuldung,
                 assets: data.assets,
                 bundesland: data.bundesland,
                 immobilienart: data.immobilienart,
                 objektStatus: data.objektStatus,
+                nutzung: data.nutzung,
                 kinderAlter: data.kinderAlter,
               }
             : undefined,

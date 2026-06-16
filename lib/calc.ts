@@ -34,6 +34,7 @@ export type Immobilienart = "wohnung" | "haus";
 export type Status = "leistbar" | "grenzfall" | "nicht_leistbar";
 export type NettoPeriode = "monat" | "jahr";
 export type ObjektStatus = "im_auge" | "suche_noch";
+export type Nutzung = "eigennutzung" | "anlage";
 
 export interface Assets {
   sparguthaben: number;
@@ -50,15 +51,20 @@ export interface CheckInput {
   /** Betrag wie eingegeben (interpretiert über nettoPeriode). */
   netto: number;
   nettoPeriode: NettoPeriode;
-  /** Variables Gehalt / Bonus / Provision pro Jahr (netto). */
-  bonusJahr: number;
-  /** Bestehende monatliche Kreditraten. */
+  /** Variables Gehalt / Bonus / Provision (Betrag, interpretiert über bonusPeriode). */
+  bonus: number;
+  bonusPeriode: NettoPeriode;
+  /** Bestehende monatliche Kreditraten, die bestehen bleiben. */
   raten: number;
+  /** Restschuld bestehender Kredite, die umgeschuldet / mitfinanziert werden sollen. */
+  umschuldung: number;
   assets: Assets;
   bundesland: Bundesland;
   immobilienart: Immobilienart;
   /** Hat die Person schon ein konkretes Objekt? */
   objektStatus: ObjektStatus;
+  /** Eigennutzung oder Kapitalanlage? */
+  nutzung: Nutzung;
   alter: number;
   erwachsene: number;
   /** Alter jedes Kindes (Länge = Anzahl Kinder). */
@@ -83,6 +89,8 @@ export interface CheckResult {
   eigenkapital: number;
   ekQuote: number;
   nebenkosten: number;
+  /** Restschuld, die ins neue Darlehen mitfinanziert wird (Umschuldung). */
+  umschuldung: number;
   laufzeitJahre: number;
   ekBreakdown: EkRow[];
 }
@@ -100,8 +108,12 @@ function int(n: unknown, min: number, max: number, fb: number): number {
 export function effektivesMonatsnetto(input: CheckInput): number {
   const betrag = num(input.netto, 0, 12_000_000);
   const monatsNetto = input.nettoPeriode === "jahr" ? betrag / 12 : betrag;
-  const bonus = num(input.bonusJahr, 0, 5_000_000);
-  const bonusMonatlich = (bonus * CONFIG.BONUS_ANRECHNUNG) / 12;
+  const bonus = num(input.bonus, 0, 5_000_000);
+  // Bonus wird konservativ zu 50 % angerechnet; je nach Periode pro Monat
+  // direkt oder Jahresbetrag auf den Monat umgelegt.
+  const bonusBasisMonatlich =
+    input.bonusPeriode === "monat" ? bonus : bonus / 12;
+  const bonusMonatlich = bonusBasisMonatlich * CONFIG.BONUS_ANRECHNUNG;
   return Math.min(1_000_000, monatsNetto + bonusMonatlich);
 }
 
@@ -261,6 +273,7 @@ export function berechneMitAudit(
 ): { result: CheckResult; audit: CalcAudit } {
   const alter = int(input.alter, 18, 120, 35);
   const raten = num(input.raten, 0, 500_000);
+  const umschuldung = num(input.umschuldung, 0, 10_000_000);
   const effektivNetto = effektivesMonatsnetto(input);
 
   const ek = eigenkapitalAus(input.assets);
@@ -279,9 +292,12 @@ export function berechneMitAudit(
   const maxKredit = verfuegbar * pvFactor;
 
   const gesamtbudget = eigenkapital + maxKredit;
-  const maxKaufpreis = gesamtbudget / (1 + CONFIG.NEBENKOSTEN_QUOTE);
+  // Umschuldung: die mitfinanzierte Restschuld wird aus dem Gesamtbudget
+  // bedient, steht also NICHT für den Immobilienkauf zur Verfügung.
+  const immobilienBudget = Math.max(0, gesamtbudget - umschuldung);
+  const maxKaufpreis = immobilienBudget / (1 + CONFIG.NEBENKOSTEN_QUOTE);
   const nebenkosten = maxKaufpreis * CONFIG.NEBENKOSTEN_QUOTE;
-  const ekQuote = gesamtbudget > 0 ? eigenkapital / gesamtbudget : 0;
+  const ekQuote = immobilienBudget > 0 ? eigenkapital / immobilienBudget : 0;
 
   const status = statusAus(maxKaufpreis, ekQuote, verfuegbar);
 
@@ -311,6 +327,7 @@ export function berechneMitAudit(
     eigenkapital: Math.round(eigenkapital),
     ekQuote: Math.round(ekQuote * 100) / 100,
     nebenkosten: Math.round(nebenkosten),
+    umschuldung: Math.round(umschuldung),
     laufzeitJahre,
     ekBreakdown: ekBreakdownRounded,
   };
@@ -357,7 +374,7 @@ export function berechneMitAudit(
     maxKaufpreis: {
       gesamtbudget: Math.round(gesamtbudget),
       nebenkostenQuote: CONFIG.NEBENKOSTEN_QUOTE,
-      formel: `${fmt(gesamtbudget)} / (1 + ${CONFIG.NEBENKOSTEN_QUOTE}) = ${fmt(maxKaufpreis)} €`,
+      formel: `(${fmt(gesamtbudget)}${umschuldung > 0 ? ` − ${fmt(umschuldung)} Umschuldung` : ""}) / (1 + ${CONFIG.NEBENKOSTEN_QUOTE}) = ${fmt(maxKaufpreis)} €`,
       ergebnis: Math.round(maxKaufpreis),
     },
     nebenkosten: {

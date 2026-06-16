@@ -80,14 +80,17 @@ export async function POST(request: Request) {
         const reconstructedInput: CheckInput = {
           netto: check.effektivNetto ?? 0,
           nettoPeriode: "monat",
-          bonusJahr: 0,
+          bonus: 0,
+          bonusPeriode: "jahr",
           raten: 0,
+          umschuldung: check.umschuldung ?? 0,
           assets: check.assets ?? emptyAssets(),
           bundesland: (check.bundesland ?? "wien") as CheckInput["bundesland"],
           immobilienart: (check.immobilienart ??
             "wohnung") as CheckInput["immobilienart"],
           objektStatus: (check.objektStatus ??
             "suche_noch") as CheckInput["objektStatus"],
+          nutzung: (check.nutzung ?? "eigennutzung") as CheckInput["nutzung"],
           alter: 35,
           erwachsene: 1,
           kinderAlter: check.kinderAlter ?? [],
@@ -146,7 +149,9 @@ export async function POST(request: Request) {
           `Monatsrate:    ${check.monatlicheRate} EUR`,
           `EK-Quote:      ${Math.round(check.ekQuote * 100)} %`,
           `Eigenkapital:  ${check.eigenkapital} EUR (gesamt)`,
+          `Umschuldung:   ${check.umschuldung ? `${check.umschuldung} EUR mitfinanziert` : "keine"}`,
           `Objekt:        ${check.objektStatus === "im_auge" ? "hat konkretes Objekt" : "sucht noch"}`,
+          `Nutzung:       ${check.nutzung === "anlage" ? "Kapitalanlage" : "Eigennutzung"}`,
           `Bundesland:    ${check.bundesland ?? "—"}`,
           `Immobilienart: ${check.immobilienart ?? "—"}`,
           `Eff. Netto/M.: ${check.effektivNetto ?? "—"} EUR (inkl. anteil. Bonus)`,

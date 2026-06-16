@@ -5,8 +5,10 @@ import { z } from "zod";
 export const step1Schema = z.object({
   netto: z.number().min(1, "Bitte Einkommen angeben").max(12_000_000),
   nettoPeriode: z.enum(["monat", "jahr"]),
-  bonusJahr: z.number().min(0).max(5_000_000),
+  bonus: z.number().min(0).max(5_000_000),
+  bonusPeriode: z.enum(["monat", "jahr"]),
   raten: z.number().min(0).max(20_000, "Max 20.000 €"),
+  umschuldung: z.number().min(0).max(10_000_000),
 });
 
 export const assetsSchema = z.object({
@@ -47,6 +49,7 @@ export const step3Schema = z.object({
     { message: "Bitte Immobilienart wählen" }
   ),
   objektStatus: z.enum(["im_auge", "suche_noch"]),
+  nutzung: z.enum(["eigennutzung", "anlage"]),
   alter: z.number().int().min(18, "Mind. 18").max(75, "Max 75"),
   erwachsene: z.number().int().min(1, "Mind. 1").max(4, "Max 4"),
   kinderAlter: z.array(z.number().int().min(0).max(27)).max(8),
@@ -91,10 +94,12 @@ export const leadApiSchema = z.object({
       ekQuote: z.number(),
       eigenkapital: z.number(),
       effektivNetto: z.number().optional(),
+      umschuldung: z.number().optional(),
       assets: assetsSchema.optional(),
       bundesland: z.string().optional(),
       immobilienart: z.string().optional(),
       objektStatus: z.enum(["im_auge", "suche_noch"]).optional(),
+      nutzung: z.enum(["eigennutzung", "anlage"]).optional(),
       kinderAlter: z.array(z.number()).optional(),
     })
     .optional(),
