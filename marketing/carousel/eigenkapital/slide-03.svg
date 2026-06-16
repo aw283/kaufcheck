@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1350" width="1080" height="1350">
+  <defs>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Instrument+Serif&amp;family=Inter:wght@400;500;600;700&amp;display=swap');
+      .serif{font-family:'Instrument Serif',Georgia,'Times New Roman',serif;}
+      .sans{font-family:'Inter',system-ui,-apple-system,Arial,sans-serif;}
+    </style>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#1aa851"/>
+      <stop offset="100%" stop-color="#137a3a"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1080" height="1350" fill="url(#bg)"/>
+  <g fill="none" stroke="#ffffff" stroke-width="2" opacity="0.10">
+    <circle cx="80" cy="1280" r="120"/>
+    <circle cx="80" cy="1280" r="220"/>
+  </g>
+
+  <!-- Lockup -->
+  <text x="80" y="104" class="serif" font-size="32">
+    <tspan fill="#ffffff">immo</tspan><tspan fill="#0e1b3d">ampel</tspan>
+  </text>
+  <text x="82" y="130" class="sans" font-size="12" letter-spacing="2.5" fill="#d7f0df">IMMOAMPEL.AT</text>
+
+  <!-- Progress dots (aktiv = 5) -->
+  <g>
+    <circle cx="912" cy="98" r="5" fill="#ffffff" opacity="0.45"/>
+    <circle cx="934" cy="98" r="5" fill="#ffffff" opacity="0.45"/>
+    <circle cx="956" cy="98" r="5" fill="#ffffff" opacity="0.45"/>
+    <circle cx="978" cy="98" r="5" fill="#ffffff" opacity="0.45"/>
+    <circle cx="1000" cy="98" r="5" fill="#ffffff"/>
+  </g>
+
+  <!-- Headline -->
+  <text x="540" y="470" class="serif" font-size="104" fill="#ffffff" text-anchor="middle">Jetzt</text>
+  <text x="540" y="580" class="serif" font-size="104" fill="#ffffff" text-anchor="middle">Leistbarkeit</text>
+  <text x="540" y="690" class="serif" font-size="104" fill="#ffffff" text-anchor="middle">prüfen.</text>
+  <line x1="490" y1="748" x2="590" y2="748" stroke="#ffffff" stroke-width="3" opacity="0.8"/>
+
+  <!-- URL-Karte -->
+  <rect x="150" y="868" width="780" height="208" rx="26" fill="#ffffff"/>
+  <text x="540" y="970" class="serif" font-size="60" fill="#137a3a" text-anchor="middle">immoampel.at</text>
+  <line x1="360" y1="1000" x2="720" y2="1000" stroke="#e3e6ea" stroke-width="2"/>
+  <text x="540" y="1042" class="sans" font-size="22" font-weight="600" letter-spacing="1" fill="#6b7280" text-anchor="middle">Kostenlos · Ohne Registrierung</text>
+
+  <!-- Footer -->
+  <text x="540" y="1170" class="sans" font-size="22" font-weight="600" letter-spacing="1" fill="#ffffff" text-anchor="middle">In 2 Minuten · Link in Bio 👆</text>
+  <text x="540" y="1296" class="sans" font-size="14" letter-spacing="2" fill="#d7f0df" text-anchor="middle" opacity="0.9">KIM-V-KONFORM · FÜR ÖSTERREICH</text>
+</svg>

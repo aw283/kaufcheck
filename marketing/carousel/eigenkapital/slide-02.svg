@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1350" width="1080" height="1350">
+  <defs>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Instrument+Serif&amp;family=Inter:wght@400;500;600;700&amp;display=swap');
+      .serif{font-family:'Instrument Serif',Georgia,'Times New Roman',serif;}
+      .sans{font-family:'Inter',system-ui,-apple-system,Arial,sans-serif;}
+    </style>
+  </defs>
+
+  <rect width="1080" height="1350" fill="#faf8f5"/>
+  <!-- konzentrische Kreise oben rechts -->
+  <g fill="none" stroke="#e7e2d8" stroke-width="2" opacity="0.7">
+    <circle cx="1010" cy="150" r="90"/>
+    <circle cx="1010" cy="150" r="160"/>
+    <circle cx="1010" cy="150" r="240"/>
+  </g>
+
+  <!-- Lockup -->
+  <text x="80" y="104" class="serif" font-size="32">
+    <tspan fill="#14213d">immo</tspan><tspan fill="#16a34a">ampel</tspan>
+  </text>
+  <text x="82" y="130" class="sans" font-size="12" letter-spacing="2.5" fill="#9aa1ad">IMMOAMPEL.AT</text>
+
+  <!-- Progress dots (aktiv = 2) -->
+  <g>
+    <circle cx="912" cy="98" r="5" fill="#cdd2dc"/>
+    <circle cx="934" cy="98" r="5" fill="#14213d"/>
+    <circle cx="956" cy="98" r="5" fill="#cdd2dc"/>
+    <circle cx="978" cy="98" r="5" fill="#cdd2dc"/>
+    <circle cx="1000" cy="98" r="5" fill="#cdd2dc"/>
+  </g>
+
+  <!-- Eyebrow + Headline -->
+  <line x1="80" y1="318" x2="120" y2="318" stroke="#16a34a" stroke-width="3"/>
+  <text x="134" y="324" class="sans" font-size="15" font-weight="700" letter-spacing="3" fill="#16a34a">WAS ALS EIGENKAPITAL ZÄHLT</text>
+  <text x="76" y="452" class="serif" font-size="84" fill="#14213d">Mehr als nur das Sparbuch.</text>
+
+  <!-- Findings -->
+  <!-- 1 -->
+  <rect x="80" y="580" width="5" height="104" rx="2.5" fill="#16a34a"/>
+  <text x="106" y="602" class="sans" font-size="15" font-weight="700" letter-spacing="2" fill="#16a34a">SPARGUTHABEN</text>
+  <text x="104" y="640" class="serif" font-size="40" fill="#14213d">Sparbuch &amp; Bausparen — 100 %</text>
+  <text x="106" y="672" class="sans" font-size="22" fill="#6b7280">Zählt voll als Eigenkapital</text>
+  <!-- 2 -->
+  <rect x="80" y="718" width="5" height="104" rx="2.5" fill="#f59e0b"/>
+  <text x="106" y="740" class="sans" font-size="15" font-weight="700" letter-spacing="2" fill="#d98306">WERTPAPIERE</text>
+  <text x="104" y="778" class="serif" font-size="40" fill="#14213d">ETFs, Aktien, Fonds — ≈ 70 %</text>
+  <text x="106" y="810" class="sans" font-size="22" fill="#6b7280">Beleihen statt verkaufen</text>
+  <!-- 3 -->
+  <rect x="80" y="856" width="5" height="104" rx="2.5" fill="#f59e0b"/>
+  <text x="106" y="878" class="sans" font-size="15" font-weight="700" letter-spacing="2" fill="#d98306">GOLD &amp; EDELMETALLE</text>
+  <text x="104" y="916" class="serif" font-size="40" fill="#14213d">Münzen &amp; Barren — ≈ 70 %</text>
+  <text x="106" y="948" class="sans" font-size="22" fill="#6b7280">Physischer Wert zählt mit</text>
+  <!-- 4 -->
+  <rect x="80" y="994" width="5" height="104" rx="2.5" fill="#dc2626"/>
+  <text x="106" y="1016" class="sans" font-size="15" font-weight="700" letter-spacing="2" fill="#dc2626">KRYPTO</text>
+  <text x="104" y="1054" class="serif" font-size="40" fill="#14213d">Bitcoin, ETH … — ≈ 50 %</text>
+  <text x="106" y="1086" class="sans" font-size="22" fill="#6b7280">Konservativ angerechnet</text>
+  <!-- 5 -->
+  <rect x="80" y="1132" width="5" height="104" rx="2.5" fill="#1e3a8a"/>
+  <text x="106" y="1154" class="sans" font-size="15" font-weight="700" letter-spacing="2" fill="#1e3a8a">SCHENKUNG / ERBE</text>
+  <text x="104" y="1192" class="serif" font-size="40" fill="#14213d">Zugesagt — 100 %</text>
+  <text x="106" y="1224" class="sans" font-size="22" fill="#6b7280">Schriftlich zählt sofort</text>
+
+  <!-- Footer -->
+  <text x="540" y="1300" class="sans" font-size="15" font-weight="600" letter-spacing="2" fill="#9aa1ad" text-anchor="middle">Jetzt prüfen → immoampel.at</text>
+</svg>

@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1350" width="1080" height="1350">
+  <defs>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Instrument+Serif&amp;family=Inter:wght@400;500;600;700&amp;display=swap');
+      .serif{font-family:'Instrument Serif',Georgia,'Times New Roman',serif;}
+      .sans{font-family:'Inter',system-ui,-apple-system,Arial,sans-serif;}
+    </style>
+    <radialGradient id="glow" cx="22%" cy="28%" r="55%">
+      <stop offset="0%" stop-color="#16a34a" stop-opacity="0.22"/>
+      <stop offset="60%" stop-color="#16a34a" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="grid" width="90" height="90" patternUnits="userSpaceOnUse">
+      <path d="M90 0H0V90" fill="none" stroke="#ffffff" stroke-opacity="0.05" stroke-width="1"/>
+    </pattern>
+  </defs>
+
+  <rect width="1080" height="1350" fill="#0e1b3d"/>
+  <rect width="1080" height="1350" fill="url(#grid)"/>
+  <rect width="1080" height="1350" fill="url(#glow)"/>
+
+  <!-- Lockup -->
+  <text x="80" y="104" class="serif" font-size="32" font-weight="400">
+    <tspan fill="#ffffff">immo</tspan><tspan fill="#16a34a">ampel</tspan>
+  </text>
+  <text x="82" y="130" class="sans" font-size="12" letter-spacing="2.5" fill="#8b95a7">IMMOAMPEL.AT</text>
+
+  <!-- Progress dots -->
+  <g>
+    <circle cx="912" cy="98" r="5" fill="#ffffff"/>
+    <circle cx="934" cy="98" r="5" fill="#34405e"/>
+    <circle cx="956" cy="98" r="5" fill="#34405e"/>
+    <circle cx="978" cy="98" r="5" fill="#34405e"/>
+    <circle cx="1000" cy="98" r="5" fill="#34405e"/>
+  </g>
+
+  <!-- Eyebrow -->
+  <line x1="80" y1="468" x2="120" y2="468" stroke="#16a34a" stroke-width="3"/>
+  <text x="134" y="474" class="sans" font-size="15" font-weight="700" letter-spacing="3" fill="#16a34a">LEISTBARKEITS-CHECK · ÖSTERREICH</text>
+
+  <!-- Headline -->
+  <text x="76" y="612" class="serif" font-size="118" fill="#ffffff">Mehr</text>
+  <text x="76" y="730" class="serif" font-size="118" fill="#16a34a">Eigenkapital,</text>
+  <text x="76" y="848" class="serif" font-size="118" fill="#ffffff">als du denkst.</text>
+
+  <!-- Sub -->
+  <text x="80" y="952" class="sans" font-size="32" fill="#aeb6c6">Was Banken alles anrechnen —</text>
+  <text x="80" y="998" class="sans" font-size="32" fill="#aeb6c6">und die meisten übersehen.</text>
+
+  <!-- Swipe hint -->
+  <text x="540" y="1288" class="sans" font-size="15" font-weight="600" letter-spacing="3" fill="#6b7488" text-anchor="middle">WEITERSWIPEN →</text>
+</svg>
