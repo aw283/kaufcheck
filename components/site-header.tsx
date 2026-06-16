@@ -12,6 +12,7 @@ import { cn } from "@/lib/utils";
 const NAV = [
   { href: "/check", label: "Leistbarkeits-Check" },
   { href: "/bautraeger", label: "Für Bauträger" },
+  { href: "/anlage", label: "Für Anleger" },
   { href: "/foerderungen", label: "Förderungen" },
   { href: "/blog", label: "Ratgeber" },
   { href: "/zinsen", label: "Zinsen" },
