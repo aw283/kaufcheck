@@ -96,7 +96,7 @@ function LeistbarView() {
             sub={`${Math.round(result.ekQuote * 100)} % Quote`}
           />
           <Stat
-            label="Nebenkosten (~10 %)"
+            label="Nebenkosten (~11 %)"
             value={formatEuro(result.nebenkosten)}
             sub="GrESt, Notar, Makler"
           />

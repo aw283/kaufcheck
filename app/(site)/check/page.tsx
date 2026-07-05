@@ -62,9 +62,9 @@ interface AssetMeta {
 
 const ASSET_CARDS: AssetMeta[] = [
   { key: "sparguthaben", label: "Spar- & Bausparguthaben", examples: "Sparbuch, Tagesgeld, Bausparvertrag", hint: "Auch ein laufender Bausparvertrag zählt voll.", faktor: 1.0 },
-  { key: "wertpapiere", label: "Wertpapiere, ETFs, Aktien", examples: "Depot, Fondsanteile, Anleihen", hint: "Banken zählen ca. 70 % des Depotwerts an.", faktor: 0.7 },
+  { key: "wertpapiere", label: "Wertpapiere, ETFs, Aktien", examples: "Depot, Fondsanteile, Anleihen", hint: "Banken beleihen Blue Chips & breite ETFs bis ca. 80 % (Lombard).", faktor: 0.8 },
   { key: "edelmetalle", label: "Gold & Edelmetalle", examples: "Münzen, Barren, Silber", hint: "Physisches Gold zählt mit ca. 70 %.", faktor: 0.7 },
-  { key: "crypto", label: "Krypto (Bitcoin, ETH …)", examples: "Wallet, Börsen-Guthaben", hint: "Viele Banken akzeptieren Krypto (noch) nicht — wir rechnen sehr konservativ mit 50 %.", faktor: 0.5 },
+  { key: "crypto", label: "Krypto (Bitcoin, ETH …)", examples: "Wallet, Börsen-Guthaben", hint: "Krypto ist volatil — wir rechnen konservativ mit 60 %.", faktor: 0.6 },
   { key: "lebensversicherung", label: "Lebensversicherung", examples: "Aktueller Rückkaufswert", hint: "Der Rückkaufswert zählt zu 100 %, nicht die Ablaufleistung.", faktor: 1.0 },
   { key: "schenkung", label: "Schenkung / Erbe", examples: "Zugesagte Beträge von Familie", hint: "Auch eine schriftlich zugesagte Schenkung zählt.", faktor: 1.0 },
 ];
@@ -381,8 +381,8 @@ function Step1() {
           </div>
         </div>
         <p className="text-xs text-muted-foreground">
-          Provisionen, Boni, Überstundenpauschalen. Wird konservativ zu 50 %
-          angerechnet — so wie Banken es tun.
+          Provisionen, Boni, Überstundenpauschalen. Wird zu 70 %
+          angerechnet — so wie Banken regelmäßige Boni bewerten.
         </p>
       </div>
 

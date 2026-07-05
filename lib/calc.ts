@@ -1,27 +1,47 @@
 // KIM-V-konforme Leistbarkeits-Berechnung für AT-Wohnkredite.
 // Pure function – kein React, keine I/O.
 
+// Leitplanken. Stand Mitte 2026: Die KIM-V ist am 30.06.2025 ausgelaufen.
+// EK-Quote (20 %) und DSTI (40 %) sind seither nur noch FMA-Leitlinie/
+// Empfehlung – Banken dürfen wieder flexibler finanzieren (bis 90 %+ Beleihung).
+// Wir kalibrieren daher mutig-fair (Produktversprechen "mehr möglich als du denkst"),
+// bleiben aber bei Unsicherheit (Krypto, Bonus) konservativ und beim Audit transparent.
 export const CONFIG = {
+  // DSTI-Anker: auch nach KIM-V-Ende die gängige Bank-Daumenregel für die
+  // maximale Rate. Bleibt 40 % (bewusst nicht angehoben – seriöse Kappe).
   DSTI_MAX: 0.4,
-  EK_QUOTE_MIN: 0.2,
-  ZINSSATZ_PA: 0.035,
-  LAUFZEIT_DEFAULT: 30,
+  // Referenz-EK-Quote nur noch für Status-Einstufung (nicht als harte Grenze).
+  // Stand Mitte 2026: Banken finanzieren wieder bis 90 %+, "leistbar" ist
+  // schon ab ~15 % EK vertretbar – siehe statusAus().
+  EK_QUOTE_MIN: 0.15,
+  // Rechenzins: AT-Fixzinsen liegen Mitte 2026 bei ~3,0–3,3 %. 3,5 % drückte
+  // den maxKredit unnötig; 3,2 % ist realistisch-fair (leicht unter Mitte).
+  ZINSSATZ_PA: 0.032,
+  // Banken akzeptieren regelmäßig Laufzeiten bis 35 J. (Endalter-Kappe bleibt).
+  // Längere Laufzeit senkt die Rate → höherer maxKredit bei gleicher DSTI.
+  LAUFZEIT_DEFAULT: 35,
   ENDALTER_MAX: 80,
-  NEBENKOSTEN_QUOTE: 0.1,
-  // Variables Einkommen (Bonus/Provision) wird von Banken konservativ
-  // angerechnet – wir nehmen 50 % des Jahresbetrags.
-  BONUS_ANRECHNUNG: 0.5,
+  // Kaufnebenkosten AT real ~11,2 % (GrESt 3,5 % + Eintragung 1,1 % +
+  // Vertrag/Makler/NoGeb). Hier bleiben wir ehrlich – nicht schöngerechnet.
+  NEBENKOSTEN_QUOTE: 0.112,
+  // Variables Einkommen (Bonus/Provision): Banken rechnen regelmäßige,
+  // belegbare Boni oft mit 60–80 % an. Stand Mitte 2026: 70 % (fair, nicht
+  // aggressiv – volle 100 % blieben unseriös bei schwankendem Einkommen).
+  BONUS_ANRECHNUNG: 0.7,
 } as const;
 
 // Beleihungsfaktoren wie sie AT-Banken (Erste, Raiffeisen, BAWAG, ING)
-// üblicherweise anrechnen. Konservativ-realistisch – nicht überoptimistisch.
+// üblicherweise anrechnen. Stand Mitte 2026: mutig-fair, aber am Markt gedeckt.
 export const BELEIHUNG = {
   sparguthaben: 1.0,
-  wertpapiere: 0.7,
+  // Lombard-/Depotbeleihung bei Blue Chips & breiten ETFs geht regelmäßig bis
+  // 80 %. Stand Mitte 2026 daher 0.8 statt 0.7.
+  wertpapiere: 0.8,
   edelmetalle: 0.7,
-  // Krypto wird von den meisten Banken (noch) gar nicht akzeptiert;
-  // wo doch, dann stark abgewertet. Sehr konservativ.
-  crypto: 0.5,
+  // Krypto bleibt der konservativste Posten (hohe Volatilität, viele Banken
+  // akzeptieren es gar nicht). Leicht angehoben auf 0.6 – lieber unter- als
+  // überschätzen. Stand Mitte 2026.
+  crypto: 0.6,
   lebensversicherung: 1.0,
   schenkung: 1.0,
   // Immobilie wird gesondert berechnet: 70% Verkehrswert − Restschuld
@@ -109,8 +129,8 @@ export function effektivesMonatsnetto(input: CheckInput): number {
   const betrag = num(input.netto, 0, 12_000_000);
   const monatsNetto = input.nettoPeriode === "jahr" ? betrag / 12 : betrag;
   const bonus = num(input.bonus, 0, 5_000_000);
-  // Bonus wird konservativ zu 50 % angerechnet; je nach Periode pro Monat
-  // direkt oder Jahresbetrag auf den Monat umgelegt.
+  // Bonus wird zu 70 % angerechnet (CONFIG.BONUS_ANRECHNUNG, Stand Mitte 2026);
+  // je nach Periode pro Monat direkt oder Jahresbetrag auf den Monat umgelegt.
   const bonusBasisMonatlich =
     input.bonusPeriode === "monat" ? bonus : bonus / 12;
   const bonusMonatlich = bonusBasisMonatlich * CONFIG.BONUS_ANRECHNUNG;
@@ -188,21 +208,27 @@ export function eigenkapitalAus(a: Assets): {
   return { total, rows };
 }
 
+// Status-Einstufung. Stand Mitte 2026 (nach KIM-V-Ende) mutig-fair kalibriert:
+// - EK-Quote ist keine harte Grenze mehr; Banken finanzieren wieder bis 90 %+,
+//   daher gilt "leistbar" bereits ab 15 % EK, Grenzband 10–15 %.
+// - maxKaufpreis-Härtegrenzen deutlich gesenkt: in Wien kauft man um 150k fast
+//   nichts, ein "grenzfall"-Stempel hätte nur abgeschreckt. 80k = leistbar-Grenze,
+//   50k = absolute Untergrenze (darunter ist real kein Kauf finanzierbar).
 function statusAus(
   maxKaufpreis: number,
   ekQuote: number,
   verfuegbar: number
 ): Status {
-  if (maxKaufpreis < 100_000 || verfuegbar < 300) return "nicht_leistbar";
+  if (maxKaufpreis < 50_000 || verfuegbar < 300) return "nicht_leistbar";
   if (
-    (maxKaufpreis >= 100_000 && maxKaufpreis < 150_000) ||
-    (ekQuote >= 0.15 && ekQuote < CONFIG.EK_QUOTE_MIN)
+    (maxKaufpreis >= 50_000 && maxKaufpreis < 80_000) ||
+    (ekQuote >= 0.1 && ekQuote < CONFIG.EK_QUOTE_MIN)
   )
     return "grenzfall";
   if (
-    maxKaufpreis >= 150_000 &&
+    maxKaufpreis >= 80_000 &&
     ekQuote >= CONFIG.EK_QUOTE_MIN &&
-    verfuegbar > 500
+    verfuegbar > 450
   )
     return "leistbar";
   return "grenzfall";
@@ -302,9 +328,9 @@ export function berechneMitAudit(
   const status = statusAus(maxKaufpreis, ekQuote, verfuegbar);
 
   const geprueft = [
-    `Wenn maxKaufpreis < 100.000 ODER verfügbar < 300 → nicht_leistbar`,
-    `Wenn maxKaufpreis im Band 100k–150k ODER ekQuote 15%–20% → grenzfall`,
-    `Wenn maxKaufpreis ≥ 150k UND ekQuote ≥ 20% UND verfügbar > 500 → leistbar`,
+    `Wenn maxKaufpreis < 50.000 ODER verfügbar < 300 → nicht_leistbar`,
+    `Wenn maxKaufpreis im Band 50k–80k ODER ekQuote 10%–15% → grenzfall`,
+    `Wenn maxKaufpreis ≥ 80k UND ekQuote ≥ 15% UND verfügbar > 450 → leistbar`,
   ];
   const griff =
     status === "nicht_leistbar"

@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 340" width="640" height="340" font-family="Inter, system-ui, sans-serif">
+  <!-- Hintergrund -->
+  <rect width="640" height="340" fill="#f8fafc" rx="12"/>
+
+  <!-- Titel -->
+  <text x="320" y="36" text-anchor="middle" font-size="15" font-weight="700" fill="#0f172a">Typische Kapitalstruktur eines Wohnbau-Projekts</text>
+  <text x="320" y="56" text-anchor="middle" font-size="12" fill="#64748b">Richtwerte; Projektabhängig. Quelle: kreditvergleichsportal.at, stindt.law, conda.at &#x2013; Stand 2026</text>
+
+  <!-- Legende -->
+  <rect x="60" y="76" width="16" height="16" rx="3" fill="#1e3a8a"/>
+  <text x="82" y="88" font-size="12" fill="#0f172a">Senior-Bankdarlehen (70&#x2013;85&#x202F;%)</text>
+  <rect x="280" y="76" width="16" height="16" rx="3" fill="#f59e0b"/>
+  <text x="302" y="88" font-size="12" fill="#0f172a">Mezzanine / Crowd (15&#x2013;30&#x202F;%)</text>
+  <rect x="500" y="76" width="16" height="16" rx="3" fill="#16a34a"/>
+  <text x="522" y="88" font-size="12" fill="#0f172a">Eigenkapital (&#x2265;&#x202F;15&#x202F;%)</text>
+
+  <!-- Hauptbalken: Breite 520, Start x=60, y=110 -->
+  <!-- Szenario A: 78% Bank / 12% Mezz / 10% EK  → Breite 520 px -->
+
+  <!-- Label Szenario A -->
+  <text x="60" y="118" font-size="12" font-weight="600" fill="#334155">Beispiel A &#x2013; Kleines Wohnprojekt (2 Mio. &#x20AC;)</text>
+
+  <!-- Balken A -->
+  <!-- Bank 75% = 390px -->
+  <rect x="60" y="128" width="390" height="40" rx="4" fill="#1e3a8a"/>
+  <text x="255" y="153" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">Bank&#x202F;75&#x202F;%</text>
+  <!-- Mezz 15% = 78px -->
+  <rect x="450" y="128" width="78" height="40" rx="0" fill="#f59e0b"/>
+  <text x="489" y="153" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">Mezz&#x202F;15&#x202F;%</text>
+  <!-- EK 10% = 52px -->
+  <rect x="528" y="128" width="52" height="40" rx="4" fill="#16a34a" style="border-radius:0 4px 4px 0"/>
+  <text x="554" y="153" text-anchor="middle" font-size="11" font-weight="700" fill="#ffffff">EK&#x202F;10</text>
+
+  <!-- Betragsangaben A -->
+  <text x="255" y="180" text-anchor="middle" font-size="11" fill="#1e3a8a">1.500.000 &#x20AC;</text>
+  <text x="489" y="180" text-anchor="middle" font-size="11" fill="#92400e">300.000 &#x20AC;</text>
+  <text x="554" y="180" text-anchor="middle" font-size="11" fill="#15803d">200.000 &#x20AC;</text>
+
+  <!-- Label Szenario B -->
+  <text x="60" y="210" font-size="12" font-weight="600" fill="#334155">Beispiel B &#x2013; Mittleres Projekt (8 Mio. &#x20AC;)</text>
+
+  <!-- Balken B -->
+  <!-- Bank 70% = 364px -->
+  <rect x="60" y="220" width="364" height="40" rx="4" fill="#1e3a8a"/>
+  <text x="242" y="245" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">Bank&#x202F;70&#x202F;%</text>
+  <!-- Mezz 15% = 78px -->
+  <rect x="424" y="220" width="78" height="40" rx="0" fill="#f59e0b"/>
+  <text x="463" y="245" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">Mezz&#x202F;15&#x202F;%</text>
+  <!-- EK 15% = 78px -->
+  <rect x="502" y="220" width="78" height="40" rx="4" fill="#16a34a"/>
+  <text x="541" y="245" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">EK&#x202F;15&#x202F;%</text>
+
+  <!-- Betragsangaben B -->
+  <text x="242" y="272" text-anchor="middle" font-size="11" fill="#1e3a8a">5.600.000 &#x20AC;</text>
+  <text x="463" y="272" text-anchor="middle" font-size="11" fill="#92400e">1.200.000 &#x20AC;</text>
+  <text x="541" y="272" text-anchor="middle" font-size="11" fill="#15803d">1.200.000 &#x20AC;</text>
+
+  <!-- Kostenhinweis -->
+  <rect x="60" y="294" width="520" height="34" rx="6" fill="#fef9c3" stroke="#fde047" stroke-width="1"/>
+  <text x="320" y="308" text-anchor="middle" font-size="11" fill="#854d0e">Mezzanine kostet mehr als Senior-Kredit, aber weniger als hartes Eigenkapital &#x2013;</text>
+  <text x="320" y="322" text-anchor="middle" font-size="11" fill="#854d0e">Crowd-Plattform-Kosten: &#x7e;8&#x202F;% der Fundingsumme (Richtwert dagobertinvest)</text>
+</svg>

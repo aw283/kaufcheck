@@ -16,9 +16,9 @@ const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://immoampel.at";
 
 const EK_TABELLE: { asset: string; faktor: string }[] = [
   { asset: "Spar- & Bausparguthaben", faktor: "100 %" },
-  { asset: "Wertpapiere, ETFs, Aktien", faktor: "≈ 70 %" },
+  { asset: "Wertpapiere, ETFs, Aktien", faktor: "≈ 80 %" },
   { asset: "Gold & Edelmetalle", faktor: "≈ 70 %" },
-  { asset: "Krypto (Bitcoin, ETH …)", faktor: "≈ 50 %" },
+  { asset: "Krypto (Bitcoin, ETH …)", faktor: "≈ 60 %" },
   { asset: "Lebensversicherung (Rückkaufswert)", faktor: "100 %" },
   { asset: "Schenkung / Erbe (zugesagt)", faktor: "100 %" },
   { asset: "Bestehende Immobilie", faktor: "≈ 70 % − Restschuld" },
@@ -46,7 +46,7 @@ const FAQ_SNIPPET = [
   },
   {
     q: "Wie genau ist die Berechnung?",
-    a: "Wir rechnen mit denselben Leitplanken wie Ihre Bank: 40 % Schuldendienstquote, 20 % Eigenkapitalquote, KIM-V-Laufzeitgrenzen. Das Ergebnis ist ein belastbarer Orientierungswert, keine Kreditzusage.",
+    a: "Wir rechnen mit denselben Leitplanken wie Ihre Bank: 40 % Schuldendienstquote als Rate-Obergrenze, realistische Eigenkapital- und Laufzeitannahmen. Seit dem Auslaufen der KIM-V (Mitte 2025) finanzieren Banken wieder flexibler — das berücksichtigen wir. Das Ergebnis ist ein belastbarer Orientierungswert, keine Kreditzusage.",
   },
   {
     q: "Was passiert mit meinen Daten?",
@@ -90,7 +90,7 @@ export default function LandingPage() {
               {
                 Icon: Calculator,
                 title: "2 · Berechnen",
-                text: "Wir rechnen mit den KIM-V-Leitplanken: 40 % Schuldendienstquote, 20 % Eigenkapital, reale Nebenkosten.",
+                text: "Wir rechnen mit realistischen Bank-Leitplanken: 40 % Schuldendienstquote, faire Eigenkapital-Anrechnung, reale Nebenkosten.",
               },
               {
                 Icon: Handshake,

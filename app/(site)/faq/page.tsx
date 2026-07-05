@@ -15,7 +15,7 @@ const FAQS: { q: string; a: string }[] = [
   },
   {
     q: "Wie genau ist die Berechnung?",
-    a: "Wir verwenden dieselben Leitplanken wie österreichische Banken: maximal 40 % Schuldendienstquote, mindestens 20 % Eigenkapitalquote, KIM-V-konforme Laufzeiten und rund 10 % Kaufnebenkosten. Das Ergebnis ist ein belastbarer Orientierungswert — die verbindliche Zusage kann nur eine Bank nach Bonitätsprüfung geben.",
+    a: "Wir verwenden dieselben Leitplanken wie österreichische Banken: maximal 40 % Schuldendienstquote für die Rate, realistische Eigenkapital-Anrechnung, marktübliche Laufzeiten (bis 35 Jahre) und rund 11 % Kaufnebenkosten. Seit dem Auslaufen der KIM-V (Mitte 2025) finanzieren Banken wieder flexibler — auch schon ab rund 15 % Eigenkapital. Das Ergebnis ist ein belastbarer Orientierungswert — die verbindliche Zusage kann nur eine Bank nach Bonitätsprüfung geben.",
   },
   {
     q: "Welche Vermögenswerte zählen als Eigenkapital?",
